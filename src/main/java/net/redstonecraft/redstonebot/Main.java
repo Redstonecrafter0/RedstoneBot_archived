@@ -1,6 +1,7 @@
 package net.redstonecraft.redstonebot;
 
 import net.dv8tion.jda.api.OnlineStatus;
+import net.redstonecraft.redstonebot.commands.servercommands.RenameChannel;
 import net.redstonecraft.redstonebot.commands.servercommands.SetActivity;
 import net.redstonecraft.redstonebot.commands.servercommands.SetAutoChannel;
 import net.redstonecraft.redstonebot.commands.servercommands.SetStatus;
@@ -63,6 +64,7 @@ public class Main {
         getCommandManager().registerServerCommand("setactivity", new SetActivity());
         getCommandManager().registerServerCommand("setautochannel", new SetAutoChannel());
         getCommandManager().registerServerCommand("setstatus", new SetStatus());
+        getCommandManager().registerServerCommand("renamechannel", new RenameChannel());
     }
 
     public static CommandManager getCommandManager() {
