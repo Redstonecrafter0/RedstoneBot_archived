@@ -61,6 +61,6 @@ public class SetActivity implements ServerCommand {
 
     @Override
     public String usage() {
-        return Main.commandPrefix + "setactivity [ playing | listening | watching | streaming ] [name] <url>";
+        return Main.commandPrefix + " setactivity [ playing | listening | watching | streaming ] [name] <url>";
     }
 }

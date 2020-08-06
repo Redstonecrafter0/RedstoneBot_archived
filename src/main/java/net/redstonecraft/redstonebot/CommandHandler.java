@@ -23,6 +23,9 @@ public class CommandHandler extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event)  {
+        if (!event.isFromType(ChannelType.TEXT)) {
+            return;
+        }
         if (event.getAuthor().isBot()) {
             return;
         }
