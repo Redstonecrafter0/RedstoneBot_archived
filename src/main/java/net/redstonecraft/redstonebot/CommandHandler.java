@@ -53,10 +53,6 @@ public class CommandHandler extends ListenerAdapter {
     }
 
     @Override
-    public void onGuildJoin(GuildJoinEvent event) {
-    }
-
-    @Override
     public void onPrivateMessageReceived(PrivateMessageReceivedEvent event) {
         if (event.getAuthor().isBot()) {
             return;

@@ -22,6 +22,8 @@ public class Main {
 
     public static CommandManager commandManager;
 
+    public static SQL sql;
+
     private Terminal terminal;
 
     public static void main(String[] args) {
@@ -33,6 +35,8 @@ public class Main {
             clientId = (String) rootConfig.get("clientId");
             config = (JSONObject) rootConfig.get("config");
             commandManager = new CommandManager();
+            sql = new SQL("data.db");
+            sql.update("CREATE TABLE IF NOT EXISTS members (dcId string, verifyId string, verified integer)");
             registerCommands();
         } catch (ParseException | IOException e) {
             e.printStackTrace();
@@ -72,6 +76,15 @@ public class Main {
 
     public static Logger getLogger() {
         return Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    }
+
+    public static String randomString(String nums, int lenght) {
+        StringBuilder builder = new StringBuilder();
+        while (lenght-- != 0) {
+            int character = (int)(Math.random()*nums.length());
+            builder.append(nums.charAt(character));
+        }
+        return builder.toString();
     }
 
     public static String prettyPrintJSON(String unformattedJsonString) {
