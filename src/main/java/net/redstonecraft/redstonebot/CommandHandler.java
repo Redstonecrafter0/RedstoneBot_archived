@@ -116,8 +116,8 @@ public class CommandHandler extends ListenerAdapter {
         User member = event.getAuthor();
         Message message = event.getMessage();
         String msg = message.getContentDisplay();
-        if (!msg.startsWith(Main.commandPrefix + " ")) {
-            msg = Main.commandPrefix + msg.substring(Main.commandPrefix.length() + 1);
+        if (!msg.startsWith(Main.commandPrefix + " ") && !(msg.equals(Main.commandPrefix) || msg.equals(Main.commandPrefix + " "))) {
+            msg = Main.commandPrefix + " " + msg.substring(Main.commandPrefix.length());
         }
         String[] oriArgs = msg.split(" ");
         String command = "help";
