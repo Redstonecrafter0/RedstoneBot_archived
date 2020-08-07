@@ -7,6 +7,8 @@ import net.redstonecraft.redstonebot.Main;
 import net.redstonecraft.redstonebot.interfaces.ServerCommand;
 
 import java.awt.*;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,9 +61,8 @@ public class Server implements ServerCommand {
         eb.addField("Max Presences", String.valueOf(channel.getGuild().getMaxPresences()), false);
         eb.addField("Max Bitrate", String.valueOf(channel.getGuild().getMaxBitrate() / 1000) + " kbps", false);
         eb.addField("Max Filesize", renderFileSize(channel.getGuild().getMaxFileSize()), false);
+        eb.addField("Erstellt", "Datum: " + channel.getGuild().getTimeCreated().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)) + "\nUhrzeit: " + channel.getGuild().getTimeCreated().format(DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM)), false);
         eb.setThumbnail(channel.getGuild().getIconUrl());
-        channel.getGuild().getMaxBitrate();
-        channel.getGuild().getMaxFileSize();
         channel.sendMessage(eb.build()).queue();
         return true;
     }
