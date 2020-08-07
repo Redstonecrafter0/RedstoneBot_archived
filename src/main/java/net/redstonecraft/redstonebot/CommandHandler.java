@@ -35,7 +35,11 @@ public class CommandHandler extends ListenerAdapter {
         TextChannel channel = event.getTextChannel();
         Member member = event.getMember();
         Message message = event.getMessage();
-        String[] oriArgs = event.getMessage().getContentDisplay().split(" ");
+        String msg = message.getContentDisplay();
+        if (!msg.startsWith(Main.commandPrefix + " ")) {
+            msg = Main.commandPrefix + msg.substring(Main.commandPrefix.length() + 1);
+        }
+        String[] oriArgs = msg.split(" ");
         String command = "help";
         String[] args = new String[]{};
         if (oriArgs.length == 0) {
@@ -111,7 +115,11 @@ public class CommandHandler extends ListenerAdapter {
         PrivateChannel channel = event.getChannel();
         User member = event.getAuthor();
         Message message = event.getMessage();
-        String[] oriArgs = event.getMessage().getContentDisplay().split(" ");
+        String msg = message.getContentDisplay();
+        if (!msg.startsWith(Main.commandPrefix + " ")) {
+            msg = Main.commandPrefix + msg.substring(Main.commandPrefix.length() + 1);
+        }
+        String[] oriArgs = msg.split(" ");
         String command = "help";
         String[] args = new String[]{};
         if (oriArgs.length == 0) {
