@@ -4,6 +4,7 @@ import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
 import net.dv8tion.jda.api.sharding.ShardManager;
+import net.redstonecraft.redstonebot.listeners.Autochannel;
 
 import javax.security.auth.login.LoginException;
 
@@ -12,6 +13,7 @@ public class Discord {
     private ShardManager manager;
 
     private final CommandHandler commandHandler;
+    private final Autochannel autochannel;
 
     public static Discord INSTANCE;
 
@@ -23,7 +25,8 @@ public class Discord {
         builder.setToken(botToken);
 
         commandHandler = new CommandHandler();
-        builder.addEventListeners(commandHandler);
+        autochannel = new Autochannel();
+        builder.addEventListeners(commandHandler, autochannel);
 
         builder.setActivity(Activity.playing("Redstone"));
         builder.setStatus(OnlineStatus.ONLINE);
@@ -34,10 +37,16 @@ public class Discord {
             e.printStackTrace();
         }
 
+        autochannel.onEnable();
+
         INSTANCE = this;
     }
 
     public ShardManager getManager() {
         return manager;
+    }
+
+    public Autochannel getAutochannel() {
+        return autochannel;
     }
 }

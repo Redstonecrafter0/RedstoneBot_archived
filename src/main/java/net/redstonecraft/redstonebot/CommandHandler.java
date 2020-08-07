@@ -2,9 +2,6 @@ package net.redstonecraft.redstonebot;
 
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
-import net.dv8tion.jda.api.events.guild.voice.GuildVoiceJoinEvent;
-import net.dv8tion.jda.api.events.guild.voice.GuildVoiceLeaveEvent;
-import net.dv8tion.jda.api.events.guild.voice.GuildVoiceMoveEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -12,8 +9,6 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import java.util.*;
 
 public class CommandHandler extends ListenerAdapter {
-
-    private final List<VoiceChannel> voiceChannels = new ArrayList<>();
 
     public static ListenerAdapter INSTANCE;
 
@@ -55,49 +50,6 @@ public class CommandHandler extends ListenerAdapter {
             }
         }
         Main.commandManager.performServerCommand(command, channel, member, message, args);
-    }
-
-    @Override
-    public void onGuildVoiceJoin(GuildVoiceJoinEvent event) {
-        if (!event.getChannelJoined().getId().equals((String) Main.config.get("autochannel"))) {
-            return;
-        }
-        Category category = event.getChannelJoined().getParent();
-        VoiceChannel voiceChannel = Objects.requireNonNull(category).createVoiceChannel("TALK " + event.getMember().getEffectiveName()).setParent(category).complete();
-        voiceChannel.getManager().sync().complete();
-        event.getChannelJoined().getGuild().moveVoiceMember(event.getMember(), voiceChannel).complete();
-        voiceChannels.add(voiceChannel);
-    }
-
-    @Override
-    public void onGuildVoiceLeave(GuildVoiceLeaveEvent event) {
-        if (!voiceChannels.contains(event.getChannelLeft())) {
-            return;
-        }
-        if (!(event.getChannelLeft().getMembers().size() == 0)) {
-            return;
-        }
-        voiceChannels.remove(event.getChannelLeft());
-        event.getChannelLeft().delete().queue();
-    }
-
-    @Override
-    public void onGuildVoiceMove(GuildVoiceMoveEvent event) {
-        if (event.getChannelJoined().getId().equals((String) Main.config.get("autochannel"))) {
-            Category category = event.getChannelJoined().getParent();
-            VoiceChannel voiceChannel = Objects.requireNonNull(category).createVoiceChannel("TALK " + event.getMember().getEffectiveName()).setParent(category).complete();
-            voiceChannel.getManager().sync().complete();
-            event.getChannelJoined().getGuild().moveVoiceMember(event.getMember(), voiceChannel).complete();
-            voiceChannels.add(voiceChannel);
-        }
-        if (!voiceChannels.contains(event.getChannelLeft())) {
-            return;
-        }
-        if (!(event.getChannelLeft().getMembers().size() == 0)) {
-            return;
-        }
-        voiceChannels.remove(event.getChannelLeft());
-        event.getChannelLeft().delete().queue();
     }
 
     @Override

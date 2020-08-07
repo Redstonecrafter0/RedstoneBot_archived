@@ -42,6 +42,7 @@ public class Main {
         Runtime.getRuntime().addShutdownHook(new Thread () {
             @Override
             public void run() {
+                Discord.INSTANCE.getAutochannel().onDisable();
                 Discord.INSTANCE.getManager().setStatus(OnlineStatus.OFFLINE);
                 try {
                     Thread.sleep(1000);
