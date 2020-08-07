@@ -15,7 +15,7 @@ public class Ping implements ServerCommand {
 
     @Override
     public MessageEmbed.Field help() {
-        return null;
+        return new MessageEmbed.Field(Main.commandPrefix + " ping", "Zeigt deinen Ping", false);
     }
 
     @Override
