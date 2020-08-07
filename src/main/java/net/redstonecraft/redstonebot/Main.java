@@ -1,10 +1,7 @@
 package net.redstonecraft.redstonebot;
 
 import net.dv8tion.jda.api.OnlineStatus;
-import net.redstonecraft.redstonebot.commands.servercommands.Server;
-import net.redstonecraft.redstonebot.commands.servercommands.SetActivity;
-import net.redstonecraft.redstonebot.commands.servercommands.SetAutoChannel;
-import net.redstonecraft.redstonebot.commands.servercommands.SetStatus;
+import net.redstonecraft.redstonebot.commands.servercommands.*;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -65,6 +62,7 @@ public class Main {
         getCommandManager().registerServerCommand("setautochannel", new SetAutoChannel());
         getCommandManager().registerServerCommand("setstatus", new SetStatus());
         getCommandManager().registerServerCommand("server", new Server());
+        getCommandManager().registerServerCommand("ping", new Ping());
     }
 
     public static CommandManager getCommandManager() {
