@@ -3,3 +3,5 @@ config.json
 target
 Redstone Bot.iml
 data.db
+tmp.png
+font.ttf
