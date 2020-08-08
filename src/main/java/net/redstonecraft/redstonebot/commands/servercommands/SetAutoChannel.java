@@ -8,14 +8,8 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.redstonecraft.redstonebot.Main;
 import net.redstonecraft.redstonebot.interfaces.ServerCommand;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import java.awt.*;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 
 public class SetAutoChannel implements ServerCommand {
     @Override
@@ -26,25 +20,12 @@ public class SetAutoChannel implements ServerCommand {
             if (args.length <= 0) {
                 return false;
             }
-            try {
-                if (channel.getGuild().getVoiceChannelById(args[0]) == null) {
-                    return false;
-                }
-            } catch (Exception ignored) {
+            if (channel.getGuild().getVoiceChannelById(args[0]) == null) {
                 return false;
             }
-            try {
-                Main.config.remove(Main.config.get("autochannel"));
-                Main.config.put("autochannel", args[0]);
-                JSONObject rootConfig = (JSONObject) new JSONParser().parse(new FileReader("config.json"));
-                rootConfig.remove("config");
-                rootConfig.put("config", Main.config);
-                FileWriter writer = new FileWriter("config.json");
-                writer.write(Main.prettyPrintJSON(rootConfig.toJSONString()));
-                writer.close();
-            } catch (ParseException | IOException e) {
-                e.printStackTrace();
-            }
+            Main.config.remove(Main.config.get("autochannel"));
+            Main.config.put("autochannel", args[0]);
+            Main.saveConfig();
             eb.setColor(Color.decode("#00FF00"));
             eb.setDescription("Der neue Autochannel channel ist " + channel.getGuild().getVoiceChannelById(args[0]).getName() + ".");
         } else {

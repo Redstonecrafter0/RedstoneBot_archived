@@ -55,8 +55,4 @@ public class Discord {
     public ShardManager getManager() {
         return manager;
     }
-
-    public Autochannel getAutochannel() {
-        return autochannel;
-    }
 }

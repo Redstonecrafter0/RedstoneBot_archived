@@ -4,8 +4,11 @@ import net.dv8tion.jda.api.OnlineStatus;
 import net.redstonecraft.redstonebot.commands.servercommands.*;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.logging.Logger;
 
 public class Main {
@@ -78,6 +81,19 @@ public class Main {
             builder.append(nums.charAt(character));
         }
         return builder.toString();
+    }
+
+    public static void saveConfig() {
+        try {
+            JSONObject rootConfig = (JSONObject) new JSONParser().parse(new FileReader("config.json"));
+            rootConfig.remove("config");
+            rootConfig.put("config", Main.config);
+            FileWriter writer = new FileWriter("config.json");
+            writer.write(Main.prettyPrintJSON(rootConfig.toJSONString()));
+            writer.close();
+        } catch (ParseException | IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static String prettyPrintJSON(String unformattedJsonString) {
