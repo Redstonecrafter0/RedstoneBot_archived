@@ -25,34 +25,15 @@ public class Autochannel extends ListenerAdapter {
     private final List<VoiceChannel> voiceChannels = new ArrayList<>();
 
     public void onEnable() {
-        String[] list = (String[]) ((JSONArray) Main.config.get("autochannels")).toArray();
-        for (String i : list) {
-            voiceChannels.add(Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).getVoiceChannelById(i));
-        }
-        for (VoiceChannel i : voiceChannels) {
-            if (i.getMembers().size() == 0) {
-                voiceChannels.remove(i);
-                i.delete().queue();
+        List<VoiceChannel> list = Objects.requireNonNull(Objects.requireNonNull(Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).getVoiceChannelById((String) Main.config.get("autochannel"))).getParent()).getVoiceChannels();
+        for (VoiceChannel i : list) {
+            if (!Objects.requireNonNull(Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).getVoiceChannelById((String) Main.config.get("autochannel"))).equals(i)) {
+                if (i.getMembers().size() == 0) {
+                    i.delete().queue();
+                } else {
+                    voiceChannels.add(i);
+                }
             }
-        }
-    }
-
-    public void onDisable() {
-        JSONArray array = new JSONArray();
-        for (VoiceChannel i : voiceChannels) {
-            array.add(i.getId());
-        }
-        try {
-            Main.config.remove(Main.config.get("autochannels"));
-            Main.config.put("autochannels", array);
-            JSONObject rootConfig = (JSONObject) new JSONParser().parse(new FileReader("config.json"));
-            rootConfig.remove("config");
-            rootConfig.put("config", Main.config);
-            FileWriter writer = new FileWriter("config.json");
-            writer.write(Main.prettyPrintJSON(rootConfig.toJSONString()));
-            writer.close();
-        } catch (ParseException | IOException e) {
-            e.printStackTrace();
         }
     }
 

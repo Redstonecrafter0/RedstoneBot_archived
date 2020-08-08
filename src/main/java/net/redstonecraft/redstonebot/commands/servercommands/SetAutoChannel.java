@@ -13,7 +13,6 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.awt.*;
-import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -25,6 +24,13 @@ public class SetAutoChannel implements ServerCommand {
         eb.setTitle(Main.prefix);
         if (member.hasPermission(Permission.ADMINISTRATOR)) {
             if (args.length <= 0) {
+                return false;
+            }
+            try {
+                if (channel.getGuild().getVoiceChannelById(args[0]) == null) {
+                    return false;
+                }
+            } catch (Exception ignored) {
                 return false;
             }
             try {
@@ -56,6 +62,6 @@ public class SetAutoChannel implements ServerCommand {
 
     @Override
     public String usage() {
-        return Main.commandPrefix + "setautochannel [channelId]";
+        return Main.commandPrefix + "setautochannel [voiceChannelId]";
     }
 }
