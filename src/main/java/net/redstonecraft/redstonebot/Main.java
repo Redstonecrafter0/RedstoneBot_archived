@@ -4,10 +4,8 @@ import net.dv8tion.jda.api.OnlineStatus;
 import net.redstonecraft.redstonebot.commands.servercommands.*;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.logging.Logger;
 
 public class Main {
@@ -24,42 +22,36 @@ public class Main {
 
     public static SQL sql;
 
-    private Terminal terminal;
-
     public static void main(String[] args) {
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            Discord.INSTANCE.getManager().setStatus(OnlineStatus.OFFLINE);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ignored) {
+            }
+            Discord.INSTANCE.getManager().shutdown();
+        }));
+
+        new Terminal();
         try {
             JSONObject rootConfig = (JSONObject) new JSONParser().parse(new FileReader("config.json"));
-            INSTANCE = new Main((String) rootConfig.get("clientId"), (String) rootConfig.get("botToken"));
+            config = (JSONObject) rootConfig.get("config");
             prefix = (String) rootConfig.get("prefix");
             commandPrefix = (String) rootConfig.get("commandPrefix");
             clientId = (String) rootConfig.get("clientId");
-            config = (JSONObject) rootConfig.get("config");
             commandManager = new CommandManager();
             sql = new SQL("data.db");
             sql.update("CREATE TABLE IF NOT EXISTS members (dcId string, verifyId string, verified integer)");
+            INSTANCE = new Main((String) rootConfig.get("clientId"), (String) rootConfig.get("botToken"));
             registerCommands();
-        } catch (ParseException | IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             System.exit(-1);
         }
-
-        Runtime.getRuntime().addShutdownHook(new Thread () {
-            @Override
-            public void run() {
-                Discord.INSTANCE.getAutochannel().onDisable();
-                Discord.INSTANCE.getManager().setStatus(OnlineStatus.OFFLINE);
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException ignored) {
-                }
-                Discord.INSTANCE.getManager().shutdown();
-            }
-        });
     }
 
     public Main(String clientId, String botToken) {
         new Discord(clientId, botToken);
-        new Terminal(this);
     }
 
     public static void registerCommands() {
@@ -68,6 +60,7 @@ public class Main {
         getCommandManager().registerServerCommand("setstatus", new SetStatus());
         getCommandManager().registerServerCommand("server", new Server());
         getCommandManager().registerServerCommand("ping", new Ping());
+        getCommandManager().registerServerCommand("clear", new Clear());
     }
 
     public static CommandManager getCommandManager() {

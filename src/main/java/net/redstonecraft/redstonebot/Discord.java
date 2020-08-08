@@ -39,9 +39,17 @@ public class Discord {
             e.printStackTrace();
         }
 
-        autochannel.onEnable();
-
         INSTANCE = this;
+
+        new Thread(() -> {
+            try {
+                Thread.sleep(5000);
+                autochannel.onEnable();
+                Main.getLogger().info("Autochannel enabled");
+            } catch (InterruptedException ignored) {
+                System.exit(0);
+            }
+        }).start();
     }
 
     public ShardManager getManager() {
