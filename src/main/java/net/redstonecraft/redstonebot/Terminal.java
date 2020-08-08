@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 
 public class Terminal {
 
-    public Terminal(Main main) {
+    public Terminal() {
         new Thread(() -> {
             String line;
             BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
