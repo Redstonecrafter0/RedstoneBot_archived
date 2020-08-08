@@ -23,7 +23,10 @@ public class Clear implements ServerCommand {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        channel.sendMessage(eb.build()).complete().delete().queueAfter(5, TimeUnit.SECONDS);
+        try {
+            channel.sendMessage(eb.build()).complete().delete().queueAfter(5, TimeUnit.SECONDS);
+        } catch (Exception ignored) {
+        }
         return true;
     }
 
