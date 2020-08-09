@@ -34,12 +34,12 @@ public class AtomZeit implements ServerCommand {
 
     @Override
     public MessageEmbed.Field help() {
-        return new MessageEmbed.Field(Main.commandPrefix + " atomuhr", "Zeigt die aktuelle Atomzeit an.", false);
+        return new MessageEmbed.Field(Main.commandPrefix + " atomzeit", "Zeigt die aktuelle Atomzeit an.", false);
     }
 
     @Override
     public String usage() {
-        return Main.commandPrefix + " atomuhr";
+        return Main.commandPrefix + " atomzeit";
     }
 
     private static String getAtomicTime() {
