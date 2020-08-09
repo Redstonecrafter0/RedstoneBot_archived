@@ -64,6 +64,7 @@ public class Main {
         getCommandManager().registerServerCommand("server", new Server());
         getCommandManager().registerServerCommand("ping", new Ping());
         getCommandManager().registerServerCommand("clear", new Clear());
+        getCommandManager().registerServerCommand("verify", new SetVerify());
     }
 
     public static CommandManager getCommandManager() {
