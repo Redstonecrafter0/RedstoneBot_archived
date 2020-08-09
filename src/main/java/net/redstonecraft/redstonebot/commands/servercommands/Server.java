@@ -108,6 +108,8 @@ public class Server implements ServerCommand {
             case 6:
                 sb.append("EB");
                 break;
+            default:
+                sb = new StringBuilder("Vielleicht unendlich?");
         }
         return sb.toString();
     }
