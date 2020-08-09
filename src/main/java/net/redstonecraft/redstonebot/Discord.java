@@ -5,6 +5,7 @@ import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
 import net.dv8tion.jda.api.sharding.ShardManager;
 import net.redstonecraft.redstonebot.listeners.Autochannel;
+import net.redstonecraft.redstonebot.listeners.CommandHandler;
 import net.redstonecraft.redstonebot.listeners.Verify;
 
 import javax.security.auth.login.LoginException;
