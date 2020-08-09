@@ -23,6 +23,8 @@ public class Main {
 
     public static CommandManager commandManager;
 
+    public static long startTime;
+
     public static SQL sql;
 
     public static void main(String[] args) {
@@ -46,6 +48,7 @@ public class Main {
             sql = new SQL("data.db");
             sql.update("CREATE TABLE IF NOT EXISTS members (dcId string, verifyId string, verified integer)");
             INSTANCE = new Main((String) rootConfig.get("clientId"), (String) rootConfig.get("botToken"));
+            startTime = System.currentTimeMillis();
             registerCommands();
         } catch (Exception e) {
             e.printStackTrace();
@@ -65,6 +68,12 @@ public class Main {
         getCommandManager().registerServerCommand("ping", new Ping());
         getCommandManager().registerServerCommand("clear", new Clear());
         getCommandManager().registerServerCommand("verify", new SetVerify());
+        getCommandManager().registerServerCommand("uptime", new Uptime());
+        getCommandManager().registerServerCommand("date", new Date());
+        getCommandManager().registerServerCommand("time", new Time());
+        getCommandManager().registerServerCommand("say", new Say());
+        getCommandManager().registerServerCommand("atomuhr", new AtomUhr());
+        getCommandManager().registerServerCommand("atomzeit", new AtomZeit());
     }
 
     public static CommandManager getCommandManager() {
