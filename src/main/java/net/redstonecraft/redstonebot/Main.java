@@ -1,6 +1,7 @@
 package net.redstonecraft.redstonebot;
 
 import net.dv8tion.jda.api.OnlineStatus;
+import net.redstonecraft.redstonebot.commands.privatecommands.RequestUnmute;
 import net.redstonecraft.redstonebot.commands.servercommands.*;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -47,6 +48,7 @@ public class Main {
             commandManager = new CommandManager();
             sql = new SQL("data.db");
             sql.update("CREATE TABLE IF NOT EXISTS members (dcId string, verifyId string, verified integer)");
+            sql.update("CREATE TABLE IF NOT EXISTS muted (dcId string, until long)");
             INSTANCE = new Main((String) rootConfig.get("clientId"), (String) rootConfig.get("botToken"));
             startTime = System.currentTimeMillis();
             registerCommands();
@@ -74,6 +76,11 @@ public class Main {
         getCommandManager().registerServerCommand("say", new Say());
         getCommandManager().registerServerCommand("atomuhr", new AtomUhr());
         getCommandManager().registerServerCommand("atomzeit", new AtomZeit());
+        getCommandManager().registerServerCommand("mute", new Mute());
+        getCommandManager().registerServerCommand("unmute", new Unmute());
+        getCommandManager().registerServerCommand("setmutedrole", new SetMutedRole());
+
+        getCommandManager().registerPrivateCommand("requestunmute", new RequestUnmute());
     }
 
     public static CommandManager getCommandManager() {
