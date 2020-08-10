@@ -1,6 +1,7 @@
 package net.redstonecraft.redstonebot.commands.servercommands;
 
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -16,12 +17,17 @@ public class Clear implements ServerCommand {
     public boolean onCommand(TextChannel channel, Member member, Message message, String[] args) {
         EmbedBuilder eb = new EmbedBuilder();
         eb.setTitle(Main.prefix);
-        try {
-            channel.deleteMessages(channel.getHistory().retrievePast(Integer.parseInt(args[0]) + 1).complete()).queue();
-            eb.setColor(Color.decode("#00FF00"));
-            eb.setDescription("Die letzten " + args[0] + " Nachrichten wurden gelöscht.");
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (member.hasPermission(Permission.MESSAGE_MANAGE)) {
+            try {
+                channel.deleteMessages(channel.getHistory().retrievePast(Integer.parseInt(args[0]) + 1).complete()).queue();
+                eb.setColor(Color.decode("#00FF00"));
+                eb.setDescription("Die letzten " + args[0] + " Nachrichten wurden gelöscht.");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            eb.setColor(Color.decode("#FF0000"));
+            eb.setDescription("Dir fehlt die Berechtigung Message-Manage");
         }
         try {
             channel.sendMessage(eb.build()).complete().delete().queueAfter(5, TimeUnit.SECONDS);
@@ -32,7 +38,7 @@ public class Clear implements ServerCommand {
 
     @Override
     public MessageEmbed.Field help() {
-        return new MessageEmbed.Field(Main.commandPrefix + " clear", "Leert den Chat um n Nachrichten", false);
+        return new MessageEmbed.Field(Main.commandPrefix + " clear", "Leert den Chat um n Nachrichten.", false);
     }
 
     @Override
