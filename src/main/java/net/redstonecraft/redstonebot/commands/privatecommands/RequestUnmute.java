@@ -25,7 +25,7 @@ public class RequestUnmute implements PrivateCommand {
                     eb.setDescription("Du bist nicht gemuted.");
                 } else {
                     if (rs.getString("dcId").equals(user.getId())) {
-                        if (rs.getLong("until") > (System.currentTimeMillis() / 1000)) {
+                        if (rs.getLong("until") < (System.currentTimeMillis() / 1000)) {
                             Member member = Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).getMember(user);
                             Role role = Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).getRoleById((String) Main.config.get("mutedRole"));
                             Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).removeRoleFromMember(Objects.requireNonNull(member), Objects.requireNonNull(role)).queue();
