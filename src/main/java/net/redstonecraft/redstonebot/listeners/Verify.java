@@ -26,9 +26,6 @@ public class Verify extends ListenerAdapter {
 
     @Override
     public void onGuildMemberJoin(GuildMemberJoinEvent event) {
-        for (Role i : Objects.requireNonNull(event.getMember()).getRoles()) {
-            event.getGuild().removeRoleFromMember(event.getMember(), i).queue();
-        }
         if (Main.config.get("unverifiedRole") == null) {
             return;
         }
