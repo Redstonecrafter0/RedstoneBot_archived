@@ -78,10 +78,10 @@ public class Mute implements ServerCommand {
                             time = timeIn * 60 * 60 * 24;
                             break;
                         case "M":
-                            time = timeIn * 60 * 60 * 24 * 31;
+                            time = timeIn * 60 * 60 * 24 * 30;
                             break;
                         case "Y":
-                            time = timeIn * 60 * 60 * 365;
+                            time = timeIn * 60 * 60 * 24 * 365;
                             break;
                         default:
                             time = 60 * 60 * 24;
