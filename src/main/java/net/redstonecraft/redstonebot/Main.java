@@ -3,6 +3,7 @@ package net.redstonecraft.redstonebot;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.redstonecraft.redstonebot.commands.privatecommands.RequestUnmute;
 import net.redstonecraft.redstonebot.commands.servercommands.*;
+import net.redstonecraft.utils.Request;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -31,6 +32,7 @@ public class Main {
     public static void main(String[] args) {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             Discord.INSTANCE.getManager().setStatus(OnlineStatus.OFFLINE);
+            YoutubeChat.stop();
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException ignored) {
@@ -60,6 +62,18 @@ public class Main {
 
     public Main(String clientId, String botToken) {
         new Discord(clientId, botToken);
+        try {
+            Thread.sleep(5000);
+            // Youtube youtube = new Youtube();
+            // youtube.run();
+            // Twitch twitch = new Twitch();
+            // twitch.run();
+            // YoutubeChat youtubeChat = new YoutubeChat();
+            // youtubeChat.run();
+            // TwitchChat twitchChat = new TwitchChat();
+            // twitchChat.run();
+        } catch (InterruptedException ignored) {
+        }
     }
 
     public static void registerCommands() {
@@ -79,6 +93,11 @@ public class Main {
         getCommandManager().registerServerCommand("mute", new Mute());
         getCommandManager().registerServerCommand("unmute", new Unmute());
         getCommandManager().registerServerCommand("setmutedrole", new SetMutedRole());
+        getCommandManager().registerServerCommand("setannouncemntchannel", new SetAnnouncementChannel());
+        getCommandManager().registerServerCommand("skin", new Skin());
+        getCommandManager().registerServerCommand("user", new User());
+        getCommandManager().registerServerCommand("namehistory", new NameHistory());
+        getCommandManager().registerServerCommand("delete", new Delete());
 
         getCommandManager().registerPrivateCommand("requestunmute", new RequestUnmute());
     }
