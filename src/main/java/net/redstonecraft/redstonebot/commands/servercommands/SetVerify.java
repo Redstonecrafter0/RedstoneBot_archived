@@ -57,7 +57,7 @@ public class SetVerify implements ServerCommand {
                 eb.setDescription("Die gegebene Id ist ungültig.");
                 eb.setColor(Color.decode("#FF0000"));
             } else {
-                Main.config.remove(Main.config.get(object));
+                Main.config.remove(object);
                 Main.config.put(object, args[1]);
                 Main.saveConfig();
                 eb.setColor(Color.decode("#00FF00"));
