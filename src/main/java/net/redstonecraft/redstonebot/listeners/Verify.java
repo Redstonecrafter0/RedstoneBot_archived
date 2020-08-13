@@ -2,7 +2,6 @@ package net.redstonecraft.redstonebot.listeners;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.ChannelType;
-import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRemoveEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -29,32 +28,34 @@ public class Verify extends ListenerAdapter {
         if (Main.config.get("unverifiedRole") == null) {
             return;
         }
-        if (event.getGuild().getRoleById((String) Main.config.get("unverifiedRole")) != null) {
-            EmbedBuilder eb = new EmbedBuilder();
-            eb.setTitle(Main.prefix);
-            eb.setColor(Color.decode("#FF0000"));
-            event.getGuild().addRoleToMember(event.getMember(), Objects.requireNonNull(event.getGuild().getRoleById((String) Main.config.get("unverifiedRole")))).queue();
-            String verifyId = Main.randomString("QWERTZIUOPASDFGHJKLYXCVBNMqwertzuioplkjhgfdsayxcvbnm0123456789", 32);
-            ResultSet rs = Main.sql.query("SELECT * FROM members WHERE verifyId = '" + verifyId + "'");
-            boolean c = true;
-            try {
-                rs.getString("verifyId");
-            } catch (SQLException ignored) {
-                c = false;
-            }
-            while (c) {
-                verifyId = Main.randomString("QWERTZIUOPASDFGHJKLYXCVBNMqwertzuioplkjhgfdsayxcvbnm0123456789", 32);
-                rs = Main.sql.query("SELECT * FROM members WHERE verifyId = '" + verifyId + "'");
+        if (!event.getMember().getUser().isBot()) {
+            if (event.getGuild().getRoleById((String) Main.config.get("unverifiedRole")) != null) {
+                EmbedBuilder eb = new EmbedBuilder();
+                eb.setTitle(Main.prefix);
+                eb.setColor(Color.decode("#FF0000"));
+                event.getGuild().addRoleToMember(event.getMember(), Objects.requireNonNull(event.getGuild().getRoleById((String) Main.config.get("unverifiedRole")))).queue();
+                String verifyId = Main.randomString("QWERTZIUOPASDFGHJKLYXCVBNMqwertzuioplkjhgfdsayxcvbnm0123456789", 32);
+                ResultSet rs = Main.sql.query("SELECT * FROM members WHERE verifyId = '" + verifyId + "'");
+                boolean c = true;
                 try {
                     rs.getString("verifyId");
                 } catch (SQLException ignored) {
                     c = false;
                 }
+                while (c) {
+                    verifyId = Main.randomString("QWERTZIUOPASDFGHJKLYXCVBNMqwertzuioplkjhgfdsayxcvbnm0123456789", 32);
+                    rs = Main.sql.query("SELECT * FROM members WHERE verifyId = '" + verifyId + "'");
+                    try {
+                        rs.getString("verifyId");
+                    } catch (SQLException ignored) {
+                        c = false;
+                    }
+                }
+                Main.sql.update("INSERT INTO members VALUES ('" + event.getMember().getId() + "', '" + verifyId + "', 0)");
+                eb.setDescription("Verifiziere dich in dem du in den Verifychannel von " + event.getGuild().getName() + " den Verifizierungscode schreibst.\nDamit akzeptierst du die Serverregeln.");
+                eb.addField("Verifizierungscode", verifyId, false);
+                event.getMember().getUser().openPrivateChannel().complete().sendMessage(eb.build()).queue();
             }
-            Main.sql.update("INSERT INTO members VALUES ('" + event.getMember().getId() + "', '" + verifyId + "', 0)");
-            eb.setDescription("Verifiziere dich in dem du in den Verifychannel von " + event.getGuild().getName() + " den Verifizierungscode schreibst.\nDamit akzeptierst du die Serverregeln.");
-            eb.addField("Verifizierungscode", verifyId, false);
-            event.getMember().getUser().openPrivateChannel().complete().sendMessage(eb.build()).queue();
         }
     }
 
@@ -65,6 +66,9 @@ public class Verify extends ListenerAdapter {
         }
         try {
             ResultSet rs = Main.sql.query("SELECT * FROM members WHERE dcId = '" + event.getUser().getId() + "'");
+            if (rs.isClosed()) {
+                return;
+            }
             if (rs.getString("dcId") != null) {
                 Main.sql.update("DELETE FROM members WHERE dcId = '" + event.getUser().getId() + "'");
             }
