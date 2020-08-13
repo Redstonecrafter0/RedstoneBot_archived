@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
 import net.dv8tion.jda.api.sharding.ShardManager;
 import net.redstonecraft.redstonebot.listeners.Autochannel;
 import net.redstonecraft.redstonebot.listeners.CommandHandler;
+import net.redstonecraft.redstonebot.listeners.DiscordChat;
 import net.redstonecraft.redstonebot.listeners.Verify;
 
 import javax.security.auth.login.LoginException;
@@ -29,7 +30,13 @@ public class Discord {
         commandHandler = new CommandHandler();
         autochannel = new Autochannel();
         Verify verify = new Verify();
-        builder.addEventListeners(commandHandler, autochannel, verify);
+        DiscordChat discordChat = new DiscordChat();
+        builder.addEventListeners(
+                commandHandler,
+                autochannel,
+                verify,
+                discordChat
+        );
 
         builder.setActivity(Activity.playing("Redstone"));
         builder.setStatus(OnlineStatus.ONLINE);
