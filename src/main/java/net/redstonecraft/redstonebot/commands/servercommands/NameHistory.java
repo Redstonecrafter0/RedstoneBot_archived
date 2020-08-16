@@ -28,7 +28,7 @@ import java.util.Objects;
 public class NameHistory implements ServerCommand {
 
     private long lastUsed = System.currentTimeMillis();
-    private File file = new File("tmp2.png");
+    private final File file = new File("tmp2.png");
 
     public NameHistory() {
         if (!file.exists()) {
@@ -48,7 +48,9 @@ public class NameHistory implements ServerCommand {
         EmbedBuilder eb = new EmbedBuilder();
         eb.setTitle(Main.prefix);
         if (((System.currentTimeMillis() - lastUsed) > 60000) || member.hasPermission(Permission.ADMINISTRATOR)) {
-            lastUsed = System.currentTimeMillis();
+            if (!member.hasPermission(Permission.ADMINISTRATOR)) {
+                lastUsed = System.currentTimeMillis();
+            }
             Request request = new Request("https://api.mojang.com/users/profiles/minecraft/" + args[0]);
             request.connect();
             String answer = request.getResponse();
@@ -80,7 +82,7 @@ public class NameHistory implements ServerCommand {
                     for (Object o : root4) {
                         JSONObject i = (JSONObject) o;
                         if (i.get("changedToAt") != null) {
-                            eb.addField((String) i.get("name"), "Geändert am " + new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format((long) i.get("changedToAt") * 1000), false);
+                            eb.addField(((String) i.get("name")).replaceAll("_", "\\_"), "Geändert am " + new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(i.get("changedToAt")), false);
                         } else {
                             eb.addField((String) i.get("name"), "Original", false);
                         }

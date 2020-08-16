@@ -51,6 +51,7 @@ public class Main {
             sql = new SQL("data.db");
             sql.update("CREATE TABLE IF NOT EXISTS members (dcId string, verifyId string, verified integer)");
             sql.update("CREATE TABLE IF NOT EXISTS muted (dcId string, until long)");
+            sql.update("CREATE TABLE IF NOT EXISTS leveling (dcId sting, xp long)");
             INSTANCE = new Main((String) rootConfig.get("clientId"), (String) rootConfig.get("botToken"));
             startTime = System.currentTimeMillis();
             registerCommands();
@@ -72,6 +73,8 @@ public class Main {
             // youtubeChat.run();
             // TwitchChat twitchChat = new TwitchChat();
             // twitchChat.run();
+            // MinecraftPatches minecraftPatches = new MinecraftPatches();
+            // minecraftPatches.run();
         } catch (InterruptedException ignored) {
         }
     }
@@ -98,6 +101,9 @@ public class Main {
         getCommandManager().registerServerCommand("user", new User());
         getCommandManager().registerServerCommand("namehistory", new NameHistory());
         getCommandManager().registerServerCommand("delete", new Delete());
+        getCommandManager().registerServerCommand("setpatchchannel", new SetPatchChannel());
+        getCommandManager().registerServerCommand("serverstatus", new ServerStatus());
+        getCommandManager().registerServerCommand("rank", new Rank());
 
         getCommandManager().registerPrivateCommand("requestunmute", new RequestUnmute());
     }
@@ -123,9 +129,9 @@ public class Main {
         try {
             JSONObject rootConfig = (JSONObject) new JSONParser().parse(new FileReader("config.json"));
             rootConfig.remove("config");
-            rootConfig.put("config", Main.config);
+            rootConfig.put("config", config);
             FileWriter writer = new FileWriter("config.json");
-            writer.write(Main.prettyPrintJSON(rootConfig.toJSONString()));
+            writer.write(prettyPrintJSON(rootConfig.toJSONString()));
             writer.close();
         } catch (ParseException | IOException e) {
             e.printStackTrace();

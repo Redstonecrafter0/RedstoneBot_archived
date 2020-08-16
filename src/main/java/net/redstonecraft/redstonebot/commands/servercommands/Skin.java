@@ -47,7 +47,9 @@ public class Skin implements ServerCommand {
         EmbedBuilder eb = new EmbedBuilder();
         eb.setTitle(Main.prefix);
         if (((System.currentTimeMillis() - lastUsed) > 60000) || member.hasPermission(Permission.ADMINISTRATOR)) {
-            lastUsed = System.currentTimeMillis();
+            if (!member.hasPermission(Permission.ADMINISTRATOR)) {
+                lastUsed = System.currentTimeMillis();
+            }
             Request request = new Request("https://api.mojang.com/users/profiles/minecraft/" + args[0]);
             request.connect();
             String answer = request.getResponse();
