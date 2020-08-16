@@ -16,7 +16,7 @@ public class Youtube {
 
     private final String[] keys;
     private int currentKey = 0;
-    public static String currentLive = "5qap5aO4i9A";
+    public static String currentLive = "";
 
     public Youtube() {
         JSONArray array = (JSONArray) Main.config.get("ytApiKeys");
@@ -69,17 +69,23 @@ public class Youtube {
                         eb.setAuthor(channel, "https://youtube.com/channel/" + Main.config.get("ytChannelId"), profileUrl);
                         eb.setColor(Color.decode("#FF0000"));
                         eb.setImage(thumbnailUrl);
+                        if (currentLive.equals(id)) {
+                            return;
+                        }
                         if (!liveBroadcastContent.equals("none") && !currentLive.equals(id)) {
                             eb.setDescription(channel + " hat ein Livestream gestartet. Sei dabei.\nhttps://www.youtube.com/watch?v=" + id);
                             currentLive = id;
+                            Objects.requireNonNull(Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).getTextChannelById((String) Main.config.get("announcementsChannel"))).sendMessage(eb.build()).queue();
                         } else {
-                            eb.setDescription(channel + " hat ein neues Video hochgeladen. Schau es dir gerne an.\nhttps://www.youtube.com/watch?v=" + id);
-                            currentLive = "";
-                            Main.config.remove("ytLastVidId");
-                            Main.config.put("ytLastVidId", id);
-                            Main.saveConfig();
+                            if (!id.equals((String) Main.config.get("ytLastVidId"))) {
+                                eb.setDescription(channel + " hat ein neues Video hochgeladen. Schau es dir gerne an.\nhttps://www.youtube.com/watch?v=" + id);
+                                currentLive = "";
+                                Main.config.remove("ytLastVidId");
+                                Main.config.put("ytLastVidId", id);
+                                Main.saveConfig();
+                                Objects.requireNonNull(Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).getTextChannelById((String) Main.config.get("announcementsChannel"))).sendMessage(eb.build()).queue();
+                            }
                         }
-                        Objects.requireNonNull(Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).getTextChannelById((String) Main.config.get("announcementsChannel"))).sendMessage(eb.build()).queue();
                     }
                 } catch (ParseException e) {
                     e.printStackTrace();

@@ -18,7 +18,7 @@ public class SetAnnouncementChannel implements ServerCommand {
         EmbedBuilder eb = new EmbedBuilder();
         eb.setTitle(Main.prefix);
         if (member.hasPermission(Permission.ADMINISTRATOR)) {
-            if (channel.getGuild().getTextChannelById(args[1]) == null) {
+            if (channel.getGuild().getTextChannelById(args[1]) != null) {
                 Main.config.remove("announcementChannel");
                 Main.config.put("announcementChannel", args[1]);
                 eb.setDescription("Der neue Announcement Channel ist " + Objects.requireNonNull(channel.getGuild().getTextChannelById(args[1])).getAsMention());

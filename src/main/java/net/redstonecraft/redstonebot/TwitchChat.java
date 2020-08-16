@@ -58,38 +58,40 @@ public class TwitchChat {
                     out.print(login);
                     out.flush();
                     System.out.println("Logged in to Twitch Chat.");
-                    while (input.hasNext()) {
-                        String line = input.nextLine();
-                        if (line.contains("PRIVMSG")) {
-                            int index2 = line.indexOf("#", 1);
-                            if (line.substring(index2 + 1).split(" ")[0].equals((String) Main.config.get("twitchChannel"))) {
-                                String authorName = line.split("!")[0].substring(1);
-                                int index = line.indexOf(':', 1);
-                                String message = line.substring(index + 1);
-                                boolean moderator = false;
-                                if (mods.contains(authorName)) {
-                                    moderator = true;
+                    while (true) {
+                        if (input.hasNextLine()) {
+                            String line = input.nextLine();
+                            if (line.contains("PRIVMSG")) {
+                                int index2 = line.indexOf("#", 1);
+                                if (line.substring(index2 + 1).split(" ")[0].equals((String) Main.config.get("twitchChannel"))) {
+                                    String authorName = line.split("!")[0].substring(1);
+                                    int index = line.indexOf(':', 1);
+                                    String message = line.substring(index + 1);
+                                    boolean moderator = false;
+                                    if (mods.contains(authorName)) {
+                                        moderator = true;
+                                    }
+                                    boolean owner = false;
+                                    if (authorName.equals((String) Main.config.get("twitchChannel"))) {
+                                        owner = true;
+                                    }
+                                    EmbedBuilder eb = new EmbedBuilder();
+                                    if (owner) {
+                                        eb.setTitle("Twitch Streamer");
+                                    } else if (moderator) {
+                                        eb.setTitle("Twitch Mod");
+                                    } else {
+                                        eb.setTitle("Twitch");
+                                    }
+                                    eb.setColor(Color.decode("#6441a5"));
+                                    eb.setAuthor(authorName);
+                                    eb.setDescription(message);
+                                    Objects.requireNonNull(Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).getTextChannelById((String) Main.config.get("liveChatChannel"))).sendMessage(eb.build()).queue();
                                 }
-                                boolean owner = false;
-                                if (authorName.equals((String) Main.config.get("twitchChannel"))) {
-                                    owner = true;
-                                }
-                                EmbedBuilder eb = new EmbedBuilder();
-                                if (owner) {
-                                    eb.setTitle("Twitch Streamer");
-                                } else if (moderator) {
-                                    eb.setTitle("Twitch Mod");
-                                } else {
-                                    eb.setTitle("Twitch");
-                                }
-                                eb.setColor(Color.decode("#6441a5"));
-                                eb.setAuthor(authorName);
-                                eb.setDescription(message);
-                                Objects.requireNonNull(Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).getTextChannelById((String) Main.config.get("liveChatChannel"))).sendMessage(eb.build()).queue();
+                            } else if (line.contains("PING")) {
+                                out.print("PONG tmi.twitch.tv\r\n");
+                                out.flush();
                             }
-                        } else if (line.contains("PING")) {
-                            out.print("PONG tmi.twitch.tv\r\n");
-                            out.flush();
                         }
                     }
                 } catch (IOException e) {
