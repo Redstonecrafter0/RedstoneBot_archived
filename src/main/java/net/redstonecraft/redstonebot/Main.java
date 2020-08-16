@@ -1,6 +1,8 @@
 package net.redstonecraft.redstonebot;
 
 import net.dv8tion.jda.api.OnlineStatus;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
 import net.redstonecraft.redstonebot.commands.privatecommands.RequestUnmute;
 import net.redstonecraft.redstonebot.commands.servercommands.*;
 import net.redstonecraft.utils.Request;
@@ -11,6 +13,8 @@ import org.json.simple.parser.ParseException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.logging.Logger;
 
 public class Main {
@@ -51,7 +55,7 @@ public class Main {
             sql = new SQL("data.db");
             sql.update("CREATE TABLE IF NOT EXISTS members (dcId string, verifyId string, verified integer)");
             sql.update("CREATE TABLE IF NOT EXISTS muted (dcId string, until long)");
-            sql.update("CREATE TABLE IF NOT EXISTS leveling (dcId sting, xp long)");
+            sql.update("CREATE TABLE IF NOT EXISTS leveling (dcId sting, xp string)");
             INSTANCE = new Main((String) rootConfig.get("clientId"), (String) rootConfig.get("botToken"));
             startTime = System.currentTimeMillis();
             registerCommands();
@@ -104,6 +108,7 @@ public class Main {
         getCommandManager().registerServerCommand("setpatchchannel", new SetPatchChannel());
         getCommandManager().registerServerCommand("serverstatus", new ServerStatus());
         getCommandManager().registerServerCommand("rank", new Rank());
+        getCommandManager().registerServerCommand("xp", new Xp());
 
         getCommandManager().registerPrivateCommand("requestunmute", new RequestUnmute());
     }
