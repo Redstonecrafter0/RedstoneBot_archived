@@ -69,16 +69,16 @@ public class Main {
         new Discord(clientId, botToken);
         try {
             Thread.sleep(5000);
-            // Youtube youtube = new Youtube();
-            // youtube.run();
-            // Twitch twitch = new Twitch();
-            // twitch.run();
-            // YoutubeChat youtubeChat = new YoutubeChat();
-            // youtubeChat.run();
-            // TwitchChat twitchChat = new TwitchChat();
-            // twitchChat.run();
-            // MinecraftPatches minecraftPatches = new MinecraftPatches();
-            // minecraftPatches.run();
+            Youtube youtube = new Youtube();
+            youtube.run();
+            Twitch twitch = new Twitch();
+            twitch.run();
+            YoutubeChat youtubeChat = new YoutubeChat();
+            youtubeChat.run();
+            TwitchChat twitchChat = new TwitchChat();
+            twitchChat.run();
+            MinecraftPatches minecraftPatches = new MinecraftPatches();
+            minecraftPatches.run();
         } catch (InterruptedException ignored) {
         }
     }
