@@ -26,9 +26,14 @@ public class Delete implements ServerCommand {
             } catch (Exception ignored) {
                 return false;
             }
-            channel.deleteMessages(channel.getHistory().retrievePast(Integer.parseInt(args[0]) + 1).complete()).queue();
-            eb.setColor(Color.decode("#00FF00"));
-            eb.setDescription("Die letzten " + args[0] + " Nachrichten wurden gelöscht.");
+            if (Integer.parseInt(args[0]) > 99) {
+                eb.setColor(Color.decode("#FF0000"));
+                eb.setDescription("Die angegebene Zahl darf nicht größer als 99 sein.");
+            } else {
+                channel.deleteMessages(channel.getHistory().retrievePast(Integer.parseInt(args[0]) + 1).complete()).queue();
+                eb.setColor(Color.decode("#00FF00"));
+                eb.setDescription("Die letzten " + args[0] + " Nachrichten wurden gelöscht.");
+            }
         } else {
             eb.setColor(Color.decode("#FF0000"));
             eb.setDescription("Dir fehlt die Berechtigun Message Manage.");
