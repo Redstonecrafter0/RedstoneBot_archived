@@ -22,6 +22,11 @@
             <name>jcenter-bintray</name>
             <url>https://jcenter.bintray.com</url>
         </repository>
+
+        <repository>
+            <id>jabylon</id>
+            <url>http://www.jabylon.org/maven</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -73,6 +78,12 @@
             <artifactId>slf4j-simple</artifactId>
             <version>1.7.30</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.xbill</groupId>
+            <artifactId>dns</artifactId>
+            <version>2.0.8</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -90,6 +101,16 @@
                             </manifestEntries>
                         </transformer>
                     </transformers>
+                    <filters>
+                        <filter>
+                            <artifact>*:*</artifact>
+                            <excludes>
+                                <exclude>META-INF/*.SF</exclude>
+                                <exclude>META-INF/*.DSA</exclude>
+                                <exclude>META-INF/*.RSA</exclude>
+                            </excludes>
+                        </filter>
+                    </filters>
                 </configuration>
                 <executions>
                     <execution>

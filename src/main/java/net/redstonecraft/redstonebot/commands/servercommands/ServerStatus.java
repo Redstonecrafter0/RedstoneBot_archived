@@ -11,7 +11,7 @@ import net.redstonecraft.redstonebot.interfaces.ServerCommand;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+import org.xbill.DNS.*;
 import sun.misc.BASE64Decoder;
 
 import javax.imageio.ImageIO;
@@ -19,6 +19,7 @@ import java.awt.*;
 import java.awt.image.RenderedImage;
 import java.io.*;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.Objects;
 
 public class ServerStatus implements ServerCommand {
@@ -27,7 +28,7 @@ public class ServerStatus implements ServerCommand {
         if (args.length == 0) {
             return false;
         }
-        String host = "";
+        String host;
         int port = 25565;
         if (args[0].contains(":")) {
             host = args[0].split(":")[0];
@@ -40,6 +41,8 @@ public class ServerStatus implements ServerCommand {
             host = args[0];
         }
         try {
+            SRVRecord srvRecord = (SRVRecord) lookupRecord("_minecraft._tcp." + host, Type.SRV);
+            host = srvRecord.getTarget().toString().replaceFirst("\\.$","");
             final Socket socket = new Socket(host, port);
             final DataInputStream in = new DataInputStream(socket.getInputStream());
             final DataOutputStream out = new DataOutputStream(socket.getOutputStream());
@@ -68,12 +71,12 @@ public class ServerStatus implements ServerCommand {
             StringBuilder sb = new StringBuilder();
             if (root.get("description") instanceof JSONObject) {
                 JSONObject description = (JSONObject) root.get("description");
-                sb.append((String) description.get("text"));
+                sb.append(removeColor((String) description.get("text")));
                 JSONArray extra = (JSONArray) description.get("extra");
                 if (extra != null) {
                     for (Object o : extra) {
                         JSONObject i = (JSONObject) o;
-                        sb.append((String) i.get("text"));
+                        sb.append(removeColor((String) i.get("text")));
                     }
                 }
             } else if (root.get("description") instanceof String) {
@@ -154,6 +157,24 @@ public class ServerStatus implements ServerCommand {
             }
         }
         return i;
+    }
+
+    private static Record lookupRecord(String hostName, int type) throws UnknownHostException {
+        Record record;
+        Lookup lookup;
+        int result;
+        try {
+            lookup = new Lookup(hostName, type);
+        } catch (TextParseException e) {
+            throw new UnknownHostException("FormatExeption");
+        }
+        lookup.run();
+        result = lookup.getResult();
+        if (result == Lookup.SUCCESSFUL) {
+            return lookup.getAnswers()[0];
+        } else {
+            throw new UnknownHostException("SRV Lookup error");
+        }
     }
 
     private static String removeColor(String in) {
