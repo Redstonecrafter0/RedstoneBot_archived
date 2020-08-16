@@ -28,11 +28,11 @@ public class CommandManager {
                 EmbedBuilder eb = new EmbedBuilder();
                 eb.setTitle(Main.prefix);
                 eb.setColor(Color.decode("#FF0000"));
-                eb.setDescription("```" + serverCommands.get(command).usage() + "```");
+                eb.setDescription("```diff\n- " + serverCommands.get(command).usage() + "```");
                 channel.sendMessage(eb.build()).queue();
             }
         } else {
-            new ServerHelp(serverCommands).onCommand(channel, member, message, args);
+            new ServerHelp(serverCommands, 0, null).onCommand(channel, member, message, args);
         }
     }
 
@@ -42,11 +42,11 @@ public class CommandManager {
                 EmbedBuilder eb = new EmbedBuilder();
                 eb.setTitle(Main.prefix);
                 eb.setColor(Color.decode("#FF0000"));
-                eb.setDescription("```" + privateCommands.get(command).usage() + "```");
+                eb.setDescription("```diff\n- " + privateCommands.get(command).usage() + "```");
                 channel.sendMessage(eb.build()).queue();
             }
         } else {
-            new PrivateHelp(privateCommands).onCommand(channel, user, message, args);
+            new PrivateHelp(privateCommands, 0, null).onCommand(channel, user, message, args);
         }
     }
 

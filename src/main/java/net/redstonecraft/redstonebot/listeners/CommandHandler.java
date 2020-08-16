@@ -2,9 +2,14 @@ package net.redstonecraft.redstonebot.listeners;
 
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionAddEvent;
 import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.priv.react.PrivateMessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.redstonecraft.redstonebot.Discord;
 import net.redstonecraft.redstonebot.Main;
+import net.redstonecraft.redstonebot.defaultcommands.privatecommands.PrivateHelp;
+import net.redstonecraft.redstonebot.defaultcommands.servercommands.ServerHelp;
 
 import java.util.*;
 
@@ -49,7 +54,11 @@ public class CommandHandler extends ListenerAdapter {
                 }
             }
         }
-        Main.commandManager.performServerCommand(command, channel, member, message, args);
+        String finalCommand = command;
+        String[] finalArgs = args;
+        new Thread(() -> {
+            Main.commandManager.performServerCommand(finalCommand, channel, member, message, finalArgs);
+        }).start();
     }
 
     @Override
@@ -82,6 +91,63 @@ public class CommandHandler extends ListenerAdapter {
                 }
             }
         }
-        Main.commandManager.performPrivateCommand(command, channel, member, message, args);
+        String finalCommand = command;
+        String[] finalArgs = args;
+        new Thread(() -> {
+            Main.commandManager.performPrivateCommand(finalCommand, channel, member, message, finalArgs);
+        }).start();
+    }
+
+    @Override
+    public void onGuildMessageReactionAdd(GuildMessageReactionAddEvent event) {
+        if (event.getMember().getUser().isBot()) {
+            return;
+        }
+        Message message = event.getChannel().retrieveMessageById(event.getMessageId()).complete();
+        if (message.getEmbeds().size() == 0) {
+            return;
+        }
+        if (message.getEmbeds().get(0).getTitle() == null) {
+            return;
+        }
+        if (!message.getEmbeds().get(0).getTitle().startsWith(Main.prefix + " - Help - ")) {
+            return;
+        }
+        int page = Integer.parseInt(message.getEmbeds().get(0).getTitle().substring(Main.prefix.length() + 10));
+        page--;
+        if (event.getReaction().getReactionEmote().getEmoji().equals("➡")) {
+            page++;
+            new ServerHelp(Main.getCommandManager().serverCommands, page, message).onCommand(event.getChannel(), event.getMember(), null, new String[]{});
+        } else if (event.getReaction().getReactionEmote().getEmoji().equals("⬅")) {
+            page--;
+            new ServerHelp(Main.getCommandManager().serverCommands, page, message).onCommand(event.getChannel(), event.getMember(), null, new String[]{});
+        } else {
+            event.getReaction().removeReaction().queue();
+        }
+    }
+
+    @Override
+    public void onPrivateMessageReactionAdd(PrivateMessageReactionAddEvent event) {
+        Message message = event.getChannel().retrieveMessageById(event.getMessageId()).complete();
+        if (message.getEmbeds().size() == 0) {
+            return;
+        }
+        if (message.getEmbeds().get(0).getTitle() == null) {
+            return;
+        }
+        if (!message.getEmbeds().get(0).getTitle().startsWith(Main.prefix + " - Help - ")) {
+            return;
+        }
+        int page = Integer.parseInt(message.getEmbeds().get(0).getTitle().substring(Main.prefix.length() + 10));
+        page--;
+        if (event.getReaction().getReactionEmote().getEmoji().equals("➡")) {
+            page++;
+            new PrivateHelp(Main.getCommandManager().privateCommands, page, message).onCommand(event.getChannel(), event.getUser(), null, new String[]{});
+        } else if (event.getReaction().getReactionEmote().getEmoji().equals("⬅")) {
+            page--;
+            new PrivateHelp(Main.getCommandManager().privateCommands, page, message).onCommand(event.getChannel(), event.getUser(), null, new String[]{});
+        } else {
+            event.getReaction().removeReaction().queue();
+        }
     }
 }
