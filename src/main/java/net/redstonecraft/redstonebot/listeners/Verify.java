@@ -116,7 +116,7 @@ public class Verify extends ListenerAdapter {
                     file.createNewFile();
                 }
                 ImageIO.write(bufferedImage, "png", file);
-                Objects.requireNonNull(event.getGuild().getTextChannelById((String) Main.config.get("welcome"))).sendFile(file).append("Willkommen auf dem Server ").append(event.getMember().getUser().getName()).queue();
+                Objects.requireNonNull(event.getGuild().getTextChannelById((String) Main.config.get("welcome"))).sendFile(file).append("Willkommen auf dem Server ").append(event.getMember().getAsMention()).queue();
             }
         } catch (SQLException e) {
             Main.getLogger().warning(e.getMessage());

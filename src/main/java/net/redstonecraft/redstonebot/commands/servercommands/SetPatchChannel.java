@@ -18,10 +18,13 @@ public class SetPatchChannel implements ServerCommand {
         EmbedBuilder eb = new EmbedBuilder();
         eb.setTitle(Main.prefix);
         if (member.hasPermission(Permission.ADMINISTRATOR)) {
-            if (channel.getGuild().getTextChannelById(args[1]) != null) {
+            if (args.length < 1) {
+                return false;
+            }
+            if (channel.getGuild().getTextChannelById(args[0]) != null) {
                 Main.config.remove("patchchannel");
-                Main.config.put("patchchannel", args[1]);
-                eb.setDescription("Der neue Patch Channel ist " + Objects.requireNonNull(channel.getGuild().getTextChannelById(args[1])).getAsMention());
+                Main.config.put("patchchannel", args[0]);
+                eb.setDescription("Der neue Patch Channel ist " + Objects.requireNonNull(channel.getGuild().getTextChannelById(args[0])).getAsMention());
                 eb.setColor(Color.decode("#00FF00"));
             } else {
                 eb.setDescription("Es gab einen Fehler.");
