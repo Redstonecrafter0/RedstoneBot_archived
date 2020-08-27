@@ -37,3 +37,7 @@ RedstoneBot
   },
   "botToken": "discord bot token"
 }
+````
+###Chromedriver
+
+>A chromedriver must be in the working directory
