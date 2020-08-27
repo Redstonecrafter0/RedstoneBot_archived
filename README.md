@@ -1,7 +1,7 @@
 RedstoneBot
 -----
 
-###Config
+### Config
 > This Bot needs a config.json in the working directory containing following content.
 
 ````json
@@ -38,6 +38,6 @@ RedstoneBot
   "botToken": "discord bot token"
 }
 ````
-###Chromedriver
+### Chromedriver
 
 >A chromedriver must be in the working directory
