@@ -8,6 +8,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
 import java.awt.*;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Objects;
 
@@ -40,7 +41,7 @@ public class Youtube {
     private void startThread() {
         thread = new Thread(() -> {
             while (true) {
-                driver.navigate().to("https://www.youtube.com/c/redstonecrafter0/videos");
+                driver.navigate().to("https://www.youtube.com/channel/" + Main.config.get("ytChannelId") + "/videos");
                 try {
                     Thread.sleep(60 * 1000);
                 } catch (InterruptedException e) {
@@ -67,6 +68,7 @@ public class Youtube {
                         eb.setAuthor(channel, "https://youtube.com/channel/" + Main.config.get("ytChannelId"), avatarUrl);
                         eb.setColor(Color.decode("#FF0000"));
                         eb.setImage(thumbnailUrl);
+                        eb.setFooter(new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(System.currentTimeMillis()), "https://i.pinimg.com/originals/de/1c/91/de1c91788be0d791135736995109272a.png");
                         if (isLive) {
                             eb.setDescription(channel + " hat ein Livestream gestartet. Sei dabei.\nhttps://www.youtube.com/watch?v=" + videoId);
                         } else {
