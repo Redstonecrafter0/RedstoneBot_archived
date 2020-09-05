@@ -1,11 +1,8 @@
 package net.redstonecraft.redstonebot;
 
 import net.dv8tion.jda.api.OnlineStatus;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Member;
 import net.redstonecraft.redstonebot.commands.privatecommands.RequestUnmute;
 import net.redstonecraft.redstonebot.commands.servercommands.*;
-import net.redstonecraft.utils.Request;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -13,8 +10,6 @@ import org.json.simple.parser.ParseException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.logging.Logger;
 
 public class Main {
@@ -56,6 +51,7 @@ public class Main {
             sql.update("CREATE TABLE IF NOT EXISTS members (dcId string, verifyId string, verified integer)");
             sql.update("CREATE TABLE IF NOT EXISTS muted (dcId string, until long)");
             sql.update("CREATE TABLE IF NOT EXISTS leveling (dcId sting, xp string)");
+            sql.update("CREATE TABLE IF NOT EXISTS reactionroles (channelId string, messageId string, roleId string, emoteId string)");
             INSTANCE = new Main((String) rootConfig.get("clientId"), (String) rootConfig.get("botToken"));
             startTime = System.currentTimeMillis();
             registerCommands();
@@ -69,16 +65,12 @@ public class Main {
         new Discord(clientId, botToken);
         try {
             Thread.sleep(5000);
-            Youtube youtube = new Youtube();
-            youtube.run();
-            Twitch twitch = new Twitch();
-            twitch.run();
-            YoutubeChat youtubeChat = new YoutubeChat();
-            youtubeChat.run();
-            TwitchChat twitchChat = new TwitchChat();
-            twitchChat.run();
-            MinecraftPatches minecraftPatches = new MinecraftPatches();
-            minecraftPatches.run();
+            System.setProperty("webdriver.chrome.driver", (String) config.get("chromeDriverPath"));
+             Youtube youtube = new Youtube();
+            // Twitch twitch = new Twitch();
+            // twitch.run();
+            // MinecraftPatches minecraftPatches = new MinecraftPatches();
+            // minecraftPatches.run();
         } catch (InterruptedException ignored) {
         }
     }
@@ -109,6 +101,10 @@ public class Main {
         getCommandManager().registerServerCommand("serverstatus", new ServerStatus());
         getCommandManager().registerServerCommand("rank", new Rank());
         getCommandManager().registerServerCommand("xp", new Xp());
+//        getCommandManager().registerServerCommand("rr", new ReactionRoles());
+        getCommandManager().registerServerCommand("twitchchat", new TwitchChat());
+        getCommandManager().registerServerCommand("youtubechat", new YoutubeChat());
+        getCommandManager().registerServerCommand("reloadyoutubelistener", new ReloadYouTubeListener());
 
         getCommandManager().registerPrivateCommand("requestunmute", new RequestUnmute());
     }
