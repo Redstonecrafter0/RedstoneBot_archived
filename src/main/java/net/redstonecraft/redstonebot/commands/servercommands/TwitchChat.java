@@ -1,6 +1,14 @@
-package net.redstonecraft.redstonebot;
+package net.redstonecraft.redstonebot.commands.servercommands;
 
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.redstonecraft.redstonebot.Discord;
+import net.redstonecraft.redstonebot.Main;
+import net.redstonecraft.redstonebot.interfaces.ServerCommand;
 import net.redstonecraft.utils.Request;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -8,30 +16,60 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.awt.*;
-import java.io.*;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Objects;
 import java.util.Random;
 import java.util.Scanner;
 
-public class TwitchChat {
+public class TwitchChat implements ServerCommand {
 
-    private Socket socket;
     private JSONArray mods = new JSONArray();
+    private Thread t1 = null;
+    private Thread t2 = null;
 
-    public TwitchChat() {
-        try {
-            socket = new Socket("irc.twitch.tv", 6667);
-        } catch (IOException e) {
-            e.printStackTrace();
+    @Override
+    public boolean onCommand(TextChannel channel, Member member, Message message, String[] args) {
+        EmbedBuilder eb = new EmbedBuilder();
+        eb.setTitle(Main.prefix);
+        if (member.hasPermission(Permission.ADMINISTRATOR)) {
+            if (args.length > 0) {
+                run(args[0]);
+                eb.setColor(Color.decode("#00ff00"));
+                eb.setDescription("Twitch-Chat zu " + args[0] + " gesetzt.");
+            } else {
+                return false;
+            }
+        } else {
+            eb.setColor(Color.decode("#ff0000"));
+            eb.setDescription("Dir fehlt die Berechtigung Administrator.");
         }
+        channel.sendMessage(eb.build()).queue();
+        return true;
     }
 
-    public void run() {
-        new Thread(() -> {
+    @Override
+    public MessageEmbed.Field help() {
+        return new MessageEmbed.Field(Main.commandPrefix + " twitchchat", "Verbindet den Twitch Chat.", false);
+    }
+
+    @Override
+    public String usage() {
+        return Main.commandPrefix + " twitchchat [channelId]";
+    }
+
+    public void run(String twitchChannel) {
+        if (t1 != null) {
+            t1.stop();
+        }
+        if (t2 != null) {
+            t2.stop();
+        }
+        t1 = new Thread(() -> {
             while (true) {
                 try {
-                    Request request = new Request("https://tmi.twitch.tv/group/user/" + Main.config.get("twitchChannel") + "/chatters");
+                    Request request = new Request("https://tmi.twitch.tv/group/user/" + twitchChannel + "/chatters");
                     request.connect();
                     JSONObject root = (JSONObject) new JSONParser().parse(request.getResponse());
                     JSONObject chatters = (JSONObject) root.get("chatters");
@@ -44,15 +82,17 @@ public class TwitchChat {
                 } catch (InterruptedException ignored) {
                 }
             }
-        }).start();
-        new Thread(() -> {
+        });
+        t1.start();
+        t2 = new Thread(() -> {
             try {
                 Thread.sleep(5000);
             } catch (InterruptedException ignored) {
             }
             while (true) {
-                String login = "PASS " + Main.config.get("twitchPassword") + "\r\nNICK " + Main.config.get("twitchNick") + (new Random().nextInt((99999 - 10000) + 1) + 10000) + "\r\nJOIN #" + Main.config.get("twitchChannel") + "\r\n";
                 try {
+                    Socket socket = new Socket("irc.twitch.tv", 6667);
+                    String login = "PASS " + Main.config.get("twitchPassword") + "\r\nNICK " + Main.config.get("twitchNick") + (new Random().nextInt((99999 - 10000) + 1) + 10000) + "\r\nJOIN #" + twitchChannel + "\r\n";
                     PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
                     Scanner input = new Scanner(socket.getInputStream());
                     out.print(login);
@@ -98,7 +138,7 @@ public class TwitchChat {
                     e.printStackTrace();
                 }
             }
-        }).start();
+        });
+        t2.start();
     }
-
 }
