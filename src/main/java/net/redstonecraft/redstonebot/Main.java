@@ -105,6 +105,7 @@ public class Main {
         getCommandManager().registerServerCommand("twitchchat", new TwitchChat());
         getCommandManager().registerServerCommand("youtubechat", new YoutubeChat());
         getCommandManager().registerServerCommand("reloadyoutubelistener", new ReloadYouTubeListener());
+        getCommandManager().registerServerCommand("deletecategory", new DeleteCategory());
 
         getCommandManager().registerPrivateCommand("requestunmute", new RequestUnmute());
     }
