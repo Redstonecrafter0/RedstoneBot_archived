@@ -67,10 +67,10 @@ public class Main {
             Thread.sleep(5000);
             System.setProperty("webdriver.chrome.driver", (String) config.get("chromeDriverPath"));
              new Youtube();
-            // Twitch twitch = new Twitch();
-            // twitch.run();
-            // MinecraftPatches minecraftPatches = new MinecraftPatches();
-            // minecraftPatches.run();
+             Twitch twitch = new Twitch();
+             twitch.run();
+             MinecraftPatches minecraftPatches = new MinecraftPatches();
+             minecraftPatches.run();
         } catch (InterruptedException ignored) {
         }
     }
