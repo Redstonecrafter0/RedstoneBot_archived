@@ -29,7 +29,8 @@ public class Leveling extends ListenerAdapter {
                 if (rs.isClosed()) {
                     Main.sql.update("INSERT INTO leveling VALUES ('" + event.getMember().getId() + "', '1')");
                 } else {
-                    Main.sql.update("UPDATE leveling SET xp = '" + (Long.parseLong(rs.getString("xp")) + 1) + "' WHERE dcId = '" +  event.getMember().getId() + "'");
+                    long x = (long) (1 + (Math.random() * 4));
+                    Main.sql.update("UPDATE leveling SET xp = '" + (Long.parseLong(rs.getString("xp")) + x) + "' WHERE dcId = '" +  event.getMember().getId() + "'");
                 }
             } catch (SQLException ignored) {
             }
