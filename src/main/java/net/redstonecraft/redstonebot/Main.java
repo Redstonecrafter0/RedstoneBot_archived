@@ -66,7 +66,7 @@ public class Main {
         try {
             Thread.sleep(5000);
             System.setProperty("webdriver.chrome.driver", (String) config.get("chromeDriverPath"));
-             Youtube youtube = new Youtube();
+             new Youtube();
             // Twitch twitch = new Twitch();
             // twitch.run();
             // MinecraftPatches minecraftPatches = new MinecraftPatches();
