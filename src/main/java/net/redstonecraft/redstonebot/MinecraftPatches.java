@@ -16,7 +16,7 @@ public class MinecraftPatches {
         new Thread(() -> {
             while (true) {
                 try {
-                    Thread.sleep(180000);
+                    Thread.sleep(180 * 1000);
                     Request request = new Request("https://launchermeta.mojang.com/mc/game/version_manifest.json");
                     request.connect();
                     JSONObject root = (JSONObject) new JSONParser().parse(request.getResponse());
@@ -39,7 +39,7 @@ public class MinecraftPatches {
                         Main.saveConfig();
                         Objects.requireNonNull(Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).getTextChannelById((String) Main.config.get("patchchannel"))).sendMessage(eb.build()).queue();
                     }
-                } catch (InterruptedException | ParseException ignored) {
+                } catch (Exception ignored) {
                 }
             }
         }).start();
