@@ -15,7 +15,7 @@ import java.sql.ResultSet;
 public class Rank implements ServerCommand {
 
     private static final double increaseFactor = 5;
-    private static final int baseXp = 10;
+    private static final int baseXp = 25;
 
     @Override
     public boolean onCommand(TextChannel channel, Member member, Message message, String[] args) {
