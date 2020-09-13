@@ -2,10 +2,12 @@ package net.redstonecraft.redstonebot.listeners;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.ChannelType;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRemoveEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.redstonecraft.redstonebot.Discord;
 import net.redstonecraft.redstonebot.Main;
 
 import javax.imageio.ImageIO;
@@ -19,6 +21,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Objects;
 
 public class Verify extends ListenerAdapter {
@@ -103,8 +106,10 @@ public class Verify extends ListenerAdapter {
                 FontMetrics metrics = graphics.getFontMetrics();
                 graphics.drawString("Willkommen", 500 - (metrics.stringWidth("Willkommen") / 2), 400);
                 graphics.drawString(event.getMember().getUser().getAsTag(), 500 - (metrics.stringWidth(event.getMember().getUser().getAsTag()) / 2), 460);
+                boolean customAvatar = false;
                 HttpURLConnection connection;
                 if (event.getMember().getUser().getAvatarUrl() != null) {
+                    customAvatar = true;
                     connection = (HttpURLConnection) new URL(Objects.requireNonNull(event.getMember().getUser().getAvatarUrl())).openConnection();
                 } else {
                     connection = (HttpURLConnection) new URL(Objects.requireNonNull(event.getMember().getUser().getDefaultAvatarUrl())).openConnection();
@@ -116,7 +121,20 @@ public class Verify extends ListenerAdapter {
                     file.createNewFile();
                 }
                 ImageIO.write(bufferedImage, "png", file);
-                Objects.requireNonNull(event.getGuild().getTextChannelById((String) Main.config.get("welcome"))).sendFile(file).append("Willkommen auf dem Server ").append(event.getMember().getAsMention()).queue();
+                Message msg = Objects.requireNonNull(Discord.INSTANCE.getManager().getUserById((String) Main.config.get("trashId"))).openPrivateChannel().complete().sendFile(file).complete();
+                String imageUrl = msg.getAttachments().get(0).getUrl();
+                EmbedBuilder eb = new EmbedBuilder();
+                eb.setDescription("**Willkommen auf dem Server** " + event.getMember().getAsMention() + "!");
+                if (event.getMember().getUser().getAvatarUrl() != null) {
+                    eb.setAuthor(event.getMember().getUser().getAsTag(), "https://discord.com", event.getMember().getUser().getAvatarUrl());
+                } else {
+                    eb.setAuthor(event.getMember().getUser().getAsTag(), "https://discord.com", event.getMember().getUser().getDefaultAvatarUrl());
+                }
+                eb.setColor(Color.decode("#3498DB"));
+                eb.setThumbnail(Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).getIconUrl());
+                eb.setImage(imageUrl);
+                eb.setFooter(new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(System.currentTimeMillis()));
+                Objects.requireNonNull(event.getGuild().getTextChannelById((String) Main.config.get("welcome"))).sendMessage(eb.build()).queue();
             }
         } catch (SQLException e) {
             Main.getLogger().warning(e.getMessage());
