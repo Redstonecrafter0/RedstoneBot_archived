@@ -29,14 +29,16 @@ public class Discord {
         Verify verify = new Verify();
         DiscordChat discordChat = new DiscordChat();
         Leveling leveling = new Leveling();
-//        ReactionRolesListener reactionRolesListener = new ReactionRolesListener();
+        ReactionRolesListener reactionRolesListener = new ReactionRolesListener();
+        ChatFilter chatFilter = new ChatFilter();
         builder.addEventListeners(
                 commandHandler,
                 autochannel,
                 verify,
                 discordChat,
-                leveling
-//                reactionRolesListener
+                leveling,
+                reactionRolesListener,
+                chatFilter
         );
 
         builder.setActivity(Activity.playing("mit Redstone"));
