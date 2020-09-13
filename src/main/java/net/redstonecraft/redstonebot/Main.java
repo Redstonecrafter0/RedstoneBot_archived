@@ -52,6 +52,10 @@ public class Main {
             sql.update("CREATE TABLE IF NOT EXISTS muted (dcId string, until long)");
             sql.update("CREATE TABLE IF NOT EXISTS leveling (dcId sting, xp string)");
             sql.update("CREATE TABLE IF NOT EXISTS reactionroles (channelId string, messageId string, roleId string, emoteId string)");
+            sql.update("CREATE TABLE IF NOT EXISTS chatfiltertokens (dcId sting, tokens integer)");
+            sql.update("CREATE TABLE IF NOT EXISTS chatfilterrole (roleId sting, channelId string)");
+            sql.update("CREATE TABLE IF NOT EXISTS chatfilterpermission (permission sting, channelId string)");
+            sql.update("CREATE TABLE IF NOT EXISTS chatfilter (cost integer, text string)");
             INSTANCE = new Main((String) rootConfig.get("clientId"), (String) rootConfig.get("botToken"));
             startTime = System.currentTimeMillis();
             registerCommands();
@@ -101,11 +105,15 @@ public class Main {
         getCommandManager().registerServerCommand("serverstatus", new ServerStatus());
         getCommandManager().registerServerCommand("rank", new Rank());
         getCommandManager().registerServerCommand("xp", new Xp());
-//        getCommandManager().registerServerCommand("rr", new ReactionRoles());
+        getCommandManager().registerServerCommand("rr", new ReactionRoles());
         getCommandManager().registerServerCommand("twitchchat", new TwitchChat());
         getCommandManager().registerServerCommand("youtubechat", new YoutubeChat());
         getCommandManager().registerServerCommand("reloadyoutubelistener", new ReloadYouTubeListener());
         getCommandManager().registerServerCommand("deletecategory", new DeleteCategory());
+        getCommandManager().registerServerCommand("embed", new Embed());
+        getCommandManager().registerServerCommand("chatfilter", new Chat());
+        getCommandManager().registerServerCommand("listpermissions", new ListPermissions());
+        getCommandManager().registerServerCommand("tokens", new Tokens());
 
         getCommandManager().registerPrivateCommand("requestunmute", new RequestUnmute());
     }
