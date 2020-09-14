@@ -18,9 +18,6 @@ RedstoneBot
     "twitchNick": "twitch bot nick",
     "twitchLastStreamId": "",
     "chromeDriverPath": "path to chromedriver",
-    "ytApiKeys":[
-      "10 yt api keys"
-    ],
     "twitchChannel": "twitch channel to watch",
     "guild": "guild id",
     "liveChatChannel": "text channel id of livechat channel",
