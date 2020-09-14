@@ -63,21 +63,23 @@ public class Youtube {
                         String avatarUrl = driver.findElement(By.id("avatar")).findElement(By.id("img")).getAttribute("src");
                         String videoId = latestVideo.findElement(By.id("dismissable")).findElements(By.tagName("ytd-thumbnail")).get(0).findElement(By.id("thumbnail")).getAttribute("href").substring(32);
                         String channel = driver.findElement(By.id("channel-name")).findElement(By.id("container")).findElement(By.id("text-container")).findElement(By.id("text")).getText();
-                        EmbedBuilder eb = new EmbedBuilder();
-                        eb.setTitle(title, "https://www.youtube.com/watch?v=" + videoId);
-                        eb.setAuthor(channel, "https://youtube.com/channel/" + Main.config.get("ytChannelId"), avatarUrl);
-                        eb.setColor(Color.decode("#FF0000"));
-                        eb.setImage(thumbnailUrl);
-                        eb.setFooter(new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(System.currentTimeMillis()), "https://i.pinimg.com/originals/de/1c/91/de1c91788be0d791135736995109272a.png");
-                        if (isLive) {
-                            eb.setDescription(channel + " hat ein Livestream gestartet. Sei dabei.\nhttps://www.youtube.com/watch?v=" + videoId);
-                        } else {
-                            eb.setDescription(channel + " hat ein neues Video hochgeladen. Schau es dir gerne an.\nhttps://www.youtube.com/watch?v=" + videoId);
-                            Main.config.remove("ytLastVidId");
-                            Main.config.put("ytLastVidId", videoId);
-                            Main.saveConfig();
+                        if (!videoId.equals((String) Main.config.get("ytLastVidId"))) {
+                            EmbedBuilder eb = new EmbedBuilder();
+                            eb.setTitle(title, "https://www.youtube.com/watch?v=" + videoId);
+                            eb.setAuthor(channel, "https://youtube.com/channel/" + Main.config.get("ytChannelId"), avatarUrl);
+                            eb.setColor(Color.decode("#FF0000"));
+                            eb.setImage(thumbnailUrl);
+                            eb.setFooter(new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(System.currentTimeMillis()), "https://i.pinimg.com/originals/de/1c/91/de1c91788be0d791135736995109272a.png");
+                            if (isLive) {
+                                eb.setDescription(channel + " hat ein Livestream gestartet. Sei dabei.\nhttps://www.youtube.com/watch?v=" + videoId);
+                            } else {
+                                eb.setDescription(channel + " hat ein neues Video hochgeladen. Schau es dir gerne an.\nhttps://www.youtube.com/watch?v=" + videoId);
+                                Main.config.remove("ytLastVidId");
+                                Main.config.put("ytLastVidId", videoId);
+                                Main.saveConfig();
+                            }
+                            Objects.requireNonNull(Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).getTextChannelById((String) Main.config.get("announcementsChannel"))).sendMessage(eb.build()).queue();
                         }
-                        Objects.requireNonNull(Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).getTextChannelById((String) Main.config.get("announcementsChannel"))).sendMessage(eb.build()).queue();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
