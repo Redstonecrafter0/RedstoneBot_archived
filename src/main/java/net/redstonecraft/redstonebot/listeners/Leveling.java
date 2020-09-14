@@ -43,11 +43,11 @@ public class Leveling extends ListenerAdapter {
             new Thread(() -> {
                 while (true) {
                     try {
-                        Thread.sleep(600);
+                        Thread.sleep(1200);
                         for (Member i : inChannel) {
                             if (Objects.requireNonNull(i).getRoles().contains(Discord.INSTANCE.getManager().getRoleById((String) Main.config.get("verifiedRole")))) {
                                 ResultSet rs = Main.sql.query("SELECT * FROM leveling WHERE dcId = '" + i.getId() + "'");
-                                long x = (long) (1 + (Math.random() * 4));
+                                long x = (long) (1 + (Math.random() * 1));
                                 if (rs.isClosed()) {
                                     Main.sql.update("INSERT INTO leveling VALUES ('" + i.getId() + "', '" + x + "')");
                                 } else {
