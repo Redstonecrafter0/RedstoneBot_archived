@@ -38,3 +38,7 @@ RedstoneBot
 ### Chromedriver
 
 >A chromedriver must be in the working directory
+
+### FontRendering
+
+> A file named font.ttf is required in the working directory for the welcome card.
