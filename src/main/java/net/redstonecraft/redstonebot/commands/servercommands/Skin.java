@@ -40,7 +40,7 @@ public class Skin implements ServerCommand {
         }
         EmbedBuilder eb = new EmbedBuilder();
         eb.setTitle(Main.prefix);
-        if (((System.currentTimeMillis() - lastUsed) > 60000) || member.hasPermission(Permission.ADMINISTRATOR)) {
+        if (((System.currentTimeMillis() - lastUsed) > 10000) || member.hasPermission(Permission.ADMINISTRATOR)) {
             if (!member.hasPermission(Permission.ADMINISTRATOR)) {
                 lastUsed = System.currentTimeMillis();
             }
