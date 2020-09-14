@@ -43,7 +43,7 @@ public class Leveling extends ListenerAdapter {
             new Thread(() -> {
                 while (true) {
                     try {
-                        Thread.sleep(1200);
+                        Thread.sleep(1800);
                         for (Member i : inChannel) {
                             try {
                                 if (Objects.requireNonNull(i).getRoles().contains(Discord.INSTANCE.getManager().getRoleById((String) Main.config.get("verifiedRole")))) {
