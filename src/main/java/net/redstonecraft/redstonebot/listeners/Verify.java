@@ -1,6 +1,7 @@
 package net.redstonecraft.redstonebot.listeners;
 
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
@@ -141,6 +142,8 @@ public class Verify extends ListenerAdapter {
         } catch (IOException | FontFormatException e) {
             e.printStackTrace();
         }
-        event.getMessage().delete().queue();
+        if (!event.getMember().hasPermission(Permission.ADMINISTRATOR)) {
+            event.getMessage().delete().queue();
+        }
     }
 }
