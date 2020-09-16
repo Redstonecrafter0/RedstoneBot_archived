@@ -108,10 +108,8 @@ public class Verify extends ListenerAdapter {
                 FontMetrics metrics = graphics.getFontMetrics();
                 graphics.drawString("Willkommen", 500 - (metrics.stringWidth("Willkommen") / 2), 400);
                 graphics.drawString(event.getMember().getUser().getAsTag(), 500 - (metrics.stringWidth(event.getMember().getUser().getAsTag()) / 2), 460);
-                boolean customAvatar = false;
                 HttpURLConnection connection;
                 if (event.getMember().getUser().getAvatarUrl() != null) {
-                    customAvatar = true;
                     connection = (HttpURLConnection) new URL(Objects.requireNonNull(event.getMember().getUser().getAvatarUrl())).openConnection();
                 } else {
                     connection = (HttpURLConnection) new URL(Objects.requireNonNull(event.getMember().getUser().getDefaultAvatarUrl())).openConnection();
