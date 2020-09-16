@@ -20,6 +20,7 @@ RedstoneBot
     "chromeDriverPath": "path to chromedriver",
     "twitchChannel": "twitch channel to watch",
     "guild": "guild id",
+    "autoRoles": [],
     "liveChatChannel": "text channel id of livechat channel",
     "ytChannelId": "youtube channel id",
     "twitchPassword": "oauth: twitch bot oauth password",
