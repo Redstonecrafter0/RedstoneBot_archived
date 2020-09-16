@@ -2,10 +2,7 @@ package net.redstonecraft.redstonebot.commands.servercommands;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.*;
 import net.redstonecraft.redstonebot.Discord;
 import net.redstonecraft.redstonebot.Main;
 import net.redstonecraft.redstonebot.interfaces.ServerCommand;
@@ -36,9 +33,16 @@ public class AutoRole implements ServerCommand {
                         break;
                     case "add":
                         if (message.getMentionedRoles().size() == 1) {
+                            eb.setDescription("AutoRole hinzugefügt");
                             JSONArray autoRoles = (JSONArray) Main.config.get("autoRoles");
                             autoRoles.add(message.getMentionedRoles().get(0).getId());
                             Main.saveConfig();
+                            Role role = Objects.requireNonNull(Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).getRoleById((String) Main.config.get("verifiedRole")));
+                            for (Member m : Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).getMembers()) {
+                                if (m.getRoles().contains(role)) {
+                                    Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).addRoleToMember(m, role).queue();
+                                }
+                            }
                         } else {
                             return false;
                         }
@@ -54,6 +58,7 @@ public class AutoRole implements ServerCommand {
                         if (message.getMentionedRoles().size() == 1) {
                             c = false;
                             autoRoles.remove(message.getMentionedRoles().get(0).getId());
+                            eb.setDescription("AutoRole entfernt.");
                         }
                         Main.saveConfig();
                         if (c) {
