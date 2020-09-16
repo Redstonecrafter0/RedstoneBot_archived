@@ -21,7 +21,7 @@ import java.util.Objects;
 public class Skin implements ServerCommand {
 
     private long lastUsed = System.currentTimeMillis();
-    private File file = new File("tmp2.png");
+    private final File file = new File("tmp2.png");
 
     public Skin() {
         if (!file.exists()) {

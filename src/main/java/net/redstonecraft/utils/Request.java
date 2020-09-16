@@ -3,6 +3,7 @@ package net.redstonecraft.utils;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
 public class Request {
 
@@ -28,7 +29,7 @@ public class Request {
 
     public void post(String content) {
         try {
-            byte[] contentBytes = content.getBytes("UTF-8");
+            byte[] contentBytes = content.getBytes(StandardCharsets.UTF_8);
             con.setDoInput(true);
             con.setDoOutput(true);
             con.setRequestProperty("Accept-Charset", "UTF-8");

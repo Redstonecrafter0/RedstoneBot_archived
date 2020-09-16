@@ -10,8 +10,6 @@ import net.redstonecraft.redstonebot.interfaces.ServerCommand;
 import java.awt.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class ReactionRoles implements ServerCommand {

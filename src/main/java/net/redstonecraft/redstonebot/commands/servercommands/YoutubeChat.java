@@ -22,12 +22,12 @@ import java.util.Objects;
 public class YoutubeChat implements ServerCommand {
 
     private boolean running = false;
-    private ChromeOptions chromeOptions = new ChromeOptions();
     private static WebDriver driver;
-    private JavascriptExecutor js;
+    private final JavascriptExecutor js;
     private static Thread thread = null;
 
     public YoutubeChat() {
+        ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.addArguments("--headless");
         driver = new ChromeDriver(chromeOptions);
         js = (JavascriptExecutor) driver;

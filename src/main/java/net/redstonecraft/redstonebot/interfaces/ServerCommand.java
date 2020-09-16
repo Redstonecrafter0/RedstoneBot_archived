@@ -6,6 +6,6 @@ import net.dv8tion.jda.api.entities.TextChannel;
 
 public interface ServerCommand extends Command {
 
-    public boolean onCommand(TextChannel channel, Member member, Message message, String[] args);
+    boolean onCommand(TextChannel channel, Member member, Message message, String[] args);
 
 }

@@ -4,8 +4,8 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 
 public interface Command {
 
-    public MessageEmbed.Field help();
+    MessageEmbed.Field help();
 
-    public String usage();
+    String usage();
 
 }

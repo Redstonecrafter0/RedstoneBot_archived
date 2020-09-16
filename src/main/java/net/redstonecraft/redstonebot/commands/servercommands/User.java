@@ -11,7 +11,6 @@ import net.redstonecraft.redstonebot.interfaces.ServerCommand;
 import java.awt.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
-import java.util.Arrays;
 import java.util.Objects;
 
 public class User implements ServerCommand {

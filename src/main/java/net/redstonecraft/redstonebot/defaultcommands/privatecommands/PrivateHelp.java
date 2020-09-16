@@ -4,7 +4,6 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
 import net.redstonecraft.redstonebot.Main;
 import net.redstonecraft.redstonebot.interfaces.PrivateCommand;
-import net.redstonecraft.redstonebot.interfaces.ServerCommand;
 
 import java.awt.*;
 import java.util.HashMap;

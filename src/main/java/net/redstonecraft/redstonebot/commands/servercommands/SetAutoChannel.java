@@ -10,6 +10,7 @@ import net.redstonecraft.redstonebot.Main;
 import net.redstonecraft.redstonebot.interfaces.ServerCommand;
 
 import java.awt.*;
+import java.util.Objects;
 
 public class SetAutoChannel implements ServerCommand {
     @Override
@@ -27,7 +28,7 @@ public class SetAutoChannel implements ServerCommand {
             Main.config.put("autochannel", args[0]);
             Main.saveConfig();
             eb.setColor(Color.decode("#00FF00"));
-            eb.setDescription("Der neue Autochannel channel ist " + channel.getGuild().getVoiceChannelById(args[0]).getName() + ".");
+            eb.setDescription("Der neue Autochannel channel ist " + Objects.requireNonNull(channel.getGuild().getVoiceChannelById(args[0])).getName() + ".");
         } else {
             eb.setColor(Color.decode("#FF0000"));
             eb.setDescription("Dir fehlt die Berechtigung Administrator.");

@@ -6,7 +6,6 @@ import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionAddEve
 import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.priv.react.PrivateMessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.redstonecraft.redstonebot.Discord;
 import net.redstonecraft.redstonebot.Main;
 import net.redstonecraft.redstonebot.defaultcommands.privatecommands.PrivateHelp;
 import net.redstonecraft.redstonebot.defaultcommands.servercommands.ServerHelp;
@@ -56,9 +55,7 @@ public class CommandHandler extends ListenerAdapter {
         }
         String finalCommand = command;
         String[] finalArgs = args;
-        new Thread(() -> {
-            Main.commandManager.performServerCommand(finalCommand, channel, member, message, finalArgs);
-        }).start();
+        new Thread(() -> Main.commandManager.performServerCommand(finalCommand, channel, member, message, finalArgs)).start();
     }
 
     @Override
@@ -93,9 +90,7 @@ public class CommandHandler extends ListenerAdapter {
         }
         String finalCommand = command;
         String[] finalArgs = args;
-        new Thread(() -> {
-            Main.commandManager.performPrivateCommand(finalCommand, channel, member, message, finalArgs);
-        }).start();
+        new Thread(() -> Main.commandManager.performPrivateCommand(finalCommand, channel, member, message, finalArgs)).start();
     }
 
     @Override
@@ -110,10 +105,10 @@ public class CommandHandler extends ListenerAdapter {
         if (message.getEmbeds().get(0).getTitle() == null) {
             return;
         }
-        if (!message.getEmbeds().get(0).getTitle().startsWith(Main.prefix + " - Help - ")) {
+        if (!Objects.requireNonNull(message.getEmbeds().get(0).getTitle()).startsWith(Main.prefix + " - Help - ")) {
             return;
         }
-        int page = Integer.parseInt(message.getEmbeds().get(0).getTitle().substring(Main.prefix.length() + 10));
+        int page = Integer.parseInt(Objects.requireNonNull(message.getEmbeds().get(0).getTitle()).substring(Main.prefix.length() + 10));
         page--;
         if (event.getReaction().getReactionEmote().getEmoji().equals("➡")) {
             page++;
@@ -135,10 +130,10 @@ public class CommandHandler extends ListenerAdapter {
         if (message.getEmbeds().get(0).getTitle() == null) {
             return;
         }
-        if (!message.getEmbeds().get(0).getTitle().startsWith(Main.prefix + " - Help - ")) {
+        if (!Objects.requireNonNull(message.getEmbeds().get(0).getTitle()).startsWith(Main.prefix + " - Help - ")) {
             return;
         }
-        int page = Integer.parseInt(message.getEmbeds().get(0).getTitle().substring(Main.prefix.length() + 10));
+        int page = Integer.parseInt(Objects.requireNonNull(message.getEmbeds().get(0).getTitle()).substring(Main.prefix.length() + 10));
         page--;
         if (event.getReaction().getReactionEmote().getEmoji().equals("➡")) {
             page++;

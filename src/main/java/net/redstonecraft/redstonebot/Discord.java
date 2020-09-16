@@ -9,10 +9,8 @@ import net.redstonecraft.redstonebot.listeners.*;
 import javax.security.auth.login.LoginException;
 
 public class Discord {
-    private final DefaultShardManagerBuilder builder;
     private ShardManager manager;
 
-    private final CommandHandler commandHandler;
     private final Autochannel autochannel;
 
     public static Discord INSTANCE;
@@ -21,10 +19,10 @@ public class Discord {
         String url = "https://discord.com/api/oauth2/authorize?client_id=" + clientId + "&scope=bot&permissions=8";
         Main.getLogger().info("Connect your Discord Bot to your server by visiting the page: " + url);
 
-        builder = new DefaultShardManagerBuilder();
+        DefaultShardManagerBuilder builder = new DefaultShardManagerBuilder();
         builder.setToken(botToken);
 
-        commandHandler = new CommandHandler();
+        CommandHandler commandHandler = new CommandHandler();
         autochannel = new Autochannel();
         Verify verify = new Verify();
         DiscordChat discordChat = new DiscordChat();

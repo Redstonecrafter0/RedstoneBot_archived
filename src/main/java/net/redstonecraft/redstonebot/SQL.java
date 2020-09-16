@@ -34,14 +34,4 @@ public class SQL {
         return null;
     }
 
-    public void close() {
-        try {
-            if (connection != null) {
-                connection.close();
-            }
-        } catch(SQLException e) {
-            Main.getLogger().warning(e.getMessage());
-        }
-    }
-
 }

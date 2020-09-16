@@ -20,6 +20,7 @@ import java.awt.image.RenderedImage;
 import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 public class ServerStatus implements ServerCommand {
@@ -41,7 +42,7 @@ public class ServerStatus implements ServerCommand {
             host = args[0];
         }
         try {
-            SRVRecord srvRecord = (SRVRecord) lookupRecord("_minecraft._tcp." + host, Type.SRV);
+            SRVRecord srvRecord = (SRVRecord) lookupRecord("_minecraft._tcp." + host);
             host = srvRecord.getTarget().toString().replaceFirst("\\.$","");
             final Socket socket = new Socket(host, port);
             final DataInputStream in = new DataInputStream(socket.getInputStream());
@@ -61,7 +62,7 @@ public class ServerStatus implements ServerCommand {
             int length = readVarInt(in);
             byte[] data = new byte[length];
             in.readFully(data);
-            String json = new String(data, "UTF-8").substring(3);
+            String json = new String(data, StandardCharsets.UTF_8).substring(3);
             JSONObject root = (JSONObject) new JSONParser().parse(json);
             JSONObject version = (JSONObject) root.get("version");
             String versionName = (String) version.get("name");
@@ -159,12 +160,11 @@ public class ServerStatus implements ServerCommand {
         return i;
     }
 
-    private static Record lookupRecord(String hostName, int type) throws UnknownHostException {
-        Record record;
+    private static Record lookupRecord(String hostName) throws UnknownHostException {
         Lookup lookup;
         int result;
         try {
-            lookup = new Lookup(hostName, type);
+            lookup = new Lookup(hostName, Type.SRV);
         } catch (TextParseException e) {
             throw new UnknownHostException("FormatExeption");
         }

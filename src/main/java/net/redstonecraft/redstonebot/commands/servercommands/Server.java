@@ -11,6 +11,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Server implements ServerCommand {
     @Override
@@ -21,7 +22,7 @@ public class Server implements ServerCommand {
         }
         eb.setTitle(channel.getGuild().getName(), channel.getGuild().retrieveInvites().complete().get(0).getUrl());
         eb.setColor(Color.decode("#3498DB"));
-        eb.addField("Owner", channel.getGuild().getOwner().getAsMention(), false);
+        eb.addField("Owner", Objects.requireNonNull(channel.getGuild().getOwner()).getAsMention(), false);
         List<Member> members = new ArrayList<>();
         List<Member> onlineMembers = new ArrayList<>();
         List<Member> bots = new ArrayList<>();
@@ -59,7 +60,7 @@ public class Server implements ServerCommand {
             eb.addField("AFK Timeout", channel.getGuild().getAfkTimeout().getSeconds() + " Sekunden\nChannel nicht festgelegt", false);
         }
         eb.addField("Max Presences", String.valueOf(channel.getGuild().getMaxPresences()), false);
-        eb.addField("Max Bitrate", String.valueOf(channel.getGuild().getMaxBitrate() / 1000) + " kbps", false);
+        eb.addField("Max Bitrate", (channel.getGuild().getMaxBitrate() / 1000) + " kbps", false);
         eb.addField("Max Filesize", renderFileSize(channel.getGuild().getMaxFileSize()), false);
         eb.addField("Erstellt", "Datum: " + channel.getGuild().getTimeCreated().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)) + "\nUhrzeit: " + channel.getGuild().getTimeCreated().format(DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM)), false);
         eb.setThumbnail(channel.getGuild().getIconUrl());
@@ -85,7 +86,7 @@ public class Server implements ServerCommand {
             finalSize = (long) Math.floor((float) finalSize / 1024);
         }
         StringBuilder sb = new StringBuilder();
-        sb.append(String.valueOf(finalSize) + " ");
+        sb.append(finalSize).append(" ");
         switch (count) {
             case 0:
                 sb.append("Bytes");
