@@ -10,6 +10,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.redstonecraft.redstonebot.Discord;
 import net.redstonecraft.redstonebot.Main;
+import org.json.simple.JSONArray;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -136,6 +137,10 @@ public class Verify extends ListenerAdapter {
                 eb.setImage(imageUrl);
                 eb.setFooter(new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(System.currentTimeMillis()));
                 Objects.requireNonNull(event.getGuild().getTextChannelById((String) Main.config.get("welcome"))).sendMessage(eb.build()).queue();
+                for (Object o : (JSONArray) Main.config.get("autoRoles")) {
+                    String i = (String) o;
+                    Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).addRoleToMember(event.getMember(), Objects.requireNonNull(Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).getRoleById(i))).queue();
+                }
             }
         } catch (SQLException e) {
             Main.getLogger().warning(e.getMessage());

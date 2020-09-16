@@ -114,6 +114,7 @@ public class Main {
         getCommandManager().registerServerCommand("chatfilter", new Chat());
         getCommandManager().registerServerCommand("listpermissions", new ListPermissions());
         getCommandManager().registerServerCommand("tokens", new Tokens());
+        getCommandManager().registerServerCommand("autorole", new AutoRole());
 
         getCommandManager().registerPrivateCommand("requestunmute", new RequestUnmute());
     }
