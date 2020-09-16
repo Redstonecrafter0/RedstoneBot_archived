@@ -11,6 +11,7 @@ import net.redstonecraft.redstonebot.Main;
 import net.redstonecraft.redstonebot.interfaces.ServerCommand;
 import org.json.simple.JSONArray;
 
+import java.awt.*;
 import java.util.Objects;
 
 public class AutoRole implements ServerCommand {
@@ -20,6 +21,7 @@ public class AutoRole implements ServerCommand {
         eb.setTitle(Main.prefix);
         if (member.hasPermission(Permission.ADMINISTRATOR)) {
             if (args.length > 0) {
+                eb.setColor(Color.decode("#00ff00"));
                 switch (args[0]) {
                     case "list":
                         if (((JSONArray) Main.config.get("autoRoles")).size() == 0) {
@@ -61,7 +63,12 @@ public class AutoRole implements ServerCommand {
                     default:
                         return false;
                 }
+            } else {
+                return false;
             }
+        } else {
+            eb.setDescription("Dir fehlt die Berechtigung Administrator");
+            eb.setColor(Color.decode("#ff0000"));
         }
         channel.sendMessage(eb.build()).queue();
         return true;
