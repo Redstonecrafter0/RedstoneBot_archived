@@ -40,7 +40,9 @@ public class AutoRole implements ServerCommand {
                             Role role = Objects.requireNonNull(Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).getRoleById((String) Main.config.get("verifiedRole")));
                             for (Member m : Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).getMembers()) {
                                 if (m.getRoles().contains(role)) {
-                                    Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).addRoleToMember(m, role).queue();
+                                    for (Object i : autoRoles) {
+                                        Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).addRoleToMember(m, Objects.requireNonNull(Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).getRoleById((String) i))).complete();
+                                    }
                                 }
                             }
                         } else {
