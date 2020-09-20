@@ -111,7 +111,7 @@ public class Main {
         getCommandManager().registerServerCommand("reloadyoutubelistener", new ReloadYouTubeListener());
         getCommandManager().registerServerCommand("deletecategory", new DeleteCategory());
         getCommandManager().registerServerCommand("embed", new Embed());
-        getCommandManager().registerServerCommand("chatfilter", new Chat());
+        getCommandManager().registerServerCommand("chat", new Chat());
         getCommandManager().registerServerCommand("listpermissions", new ListPermissions());
         getCommandManager().registerServerCommand("tokens", new Tokens());
         getCommandManager().registerServerCommand("autorole", new AutoRole());
