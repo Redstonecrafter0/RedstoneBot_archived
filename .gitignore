@@ -2,6 +2,7 @@ config.json
 .idea
 target
 Redstone Bot.iml
+redstonebot.iml
 data.db
 tmp.png
 tmp2.png
