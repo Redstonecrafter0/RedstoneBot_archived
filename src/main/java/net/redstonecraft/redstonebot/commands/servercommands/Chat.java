@@ -94,9 +94,9 @@ public class Chat implements ServerCommand {
                                     } catch (SQLException ignored) {
                                     }
                                     if (s) {
-                                        eb.setDescription("Es wurde noch nichts eingerichtet.");
-                                    } else {
                                         eb.setDescription("Die Einstellungen sind:");
+                                    } else {
+                                        eb.setDescription("Es wurde noch nichts eingerichtet.");
                                     }
                                 } else {
                                     eb.setColor(Color.decode("#ff0000"));
