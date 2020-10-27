@@ -30,13 +30,13 @@ public class Main {
 
     public static void main(String[] args) {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            Discord.INSTANCE.getManager().setStatus(OnlineStatus.OFFLINE);
+            Discord.INSTANCE.getJda().getPresence().setStatus(OnlineStatus.OFFLINE);
             YoutubeChat.stop();
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException ignored) {
             }
-            Discord.INSTANCE.getManager().shutdown();
+            Discord.INSTANCE.getJda().shutdown();
         }));
 
         new Terminal();

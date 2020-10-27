@@ -27,7 +27,7 @@ public class Chat implements ServerCommand {
                         if (args.length == 4) {
                             try {
                                 int allow = sqlBool(args[3]);
-                                String channelId = Objects.requireNonNull(Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).getTextChannelById(args[2])).getId();
+                                String channelId = Objects.requireNonNull(Objects.requireNonNull(Discord.INSTANCE.getJda().getGuildById((String) Main.config.get("guild"))).getTextChannelById(args[2])).getId();
                                 if (message.getMentionedRoles().size() == 0) {
                                     Permission permission = Permission.valueOf(args[0]);
                                     if (permission.equals(Permission.UNKNOWN)) {
@@ -50,7 +50,7 @@ public class Chat implements ServerCommand {
                                         }
                                     }
                                 } else {
-                                    Role role = Objects.requireNonNull(Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).getRoleById(args[0]));
+                                    Role role = Objects.requireNonNull(Objects.requireNonNull(Discord.INSTANCE.getJda().getGuildById((String) Main.config.get("guild"))).getRoleById(args[0]));
                                     ResultSet rs = Main.sql.query("SELECT * FROM chatfilterrole WHERE roleId = '" + role.getId() + "' AND channelId = '" + channelId + "'");
                                     if (rs.isClosed()) {
                                         if (allow == 1) {
@@ -82,13 +82,13 @@ public class Chat implements ServerCommand {
                                         if (!rs1.isClosed()) {
                                             s = true;
                                             while (rs1.next()) {
-                                                eb.addField(Permission.valueOf(rs1.getString("permission")).getName(), Objects.requireNonNull(Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).getTextChannelById(rs1.getString("channelId"))).getAsMention(), false);
+                                                eb.addField(Permission.valueOf(rs1.getString("permission")).getName(), Objects.requireNonNull(Objects.requireNonNull(Discord.INSTANCE.getJda().getGuildById((String) Main.config.get("guild"))).getTextChannelById(rs1.getString("channelId"))).getAsMention(), false);
                                             }
                                         }
                                         if (!rs2.isClosed()) {
                                             s = true;
                                             while (rs2.next()) {
-                                                eb.addField(Objects.requireNonNull(Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).getRoleById(rs2.getString("roleId"))).getName(), Objects.requireNonNull(Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).getTextChannelById(rs2.getString("channelId"))).getAsMention(), false);
+                                                eb.addField(Objects.requireNonNull(Objects.requireNonNull(Discord.INSTANCE.getJda().getGuildById((String) Main.config.get("guild"))).getRoleById(rs2.getString("roleId"))).getName(), Objects.requireNonNull(Objects.requireNonNull(Discord.INSTANCE.getJda().getGuildById((String) Main.config.get("guild"))).getTextChannelById(rs2.getString("channelId"))).getAsMention(), false);
                                             }
                                         }
                                     } catch (SQLException ignored) {
@@ -229,7 +229,7 @@ public class Chat implements ServerCommand {
                                             if (!rs1.isClosed()) {
                                                 s = true;
                                                 while (rs1.next()) {
-                                                    eb.addField(Objects.requireNonNull(Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).getMemberById(rs1.getString("dcId"))).getUser().getAsTag(), "hat gerade " + rs.getInt("tokens") + " Tokens.", false);
+                                                    eb.addField(Objects.requireNonNull(Objects.requireNonNull(Discord.INSTANCE.getJda().getGuildById((String) Main.config.get("guild"))).getMemberById(rs1.getString("dcId"))).getUser().getAsTag(), "hat gerade " + rs.getInt("tokens") + " Tokens.", false);
                                                 }
                                             }
                                         } catch (SQLException ignored) {

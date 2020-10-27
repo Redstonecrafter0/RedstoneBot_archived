@@ -1,7 +1,10 @@
 package net.redstonecraft.redstonebot;
 
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
 import net.dv8tion.jda.api.sharding.ShardManager;
 import net.redstonecraft.redstonebot.listeners.*;
@@ -9,7 +12,7 @@ import net.redstonecraft.redstonebot.listeners.*;
 import javax.security.auth.login.LoginException;
 
 public class Discord {
-    private ShardManager manager;
+    private JDA jda;
 
     private final Autochannel autochannel;
 
@@ -19,8 +22,7 @@ public class Discord {
         String url = "https://discord.com/api/oauth2/authorize?client_id=" + clientId + "&scope=bot&permissions=8";
         Main.getLogger().info("Connect your Discord Bot to your server by visiting the page: " + url);
 
-        DefaultShardManagerBuilder builder = new DefaultShardManagerBuilder();
-        builder.setToken(botToken);
+        JDABuilder builder = JDABuilder.createDefault(botToken, GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_MEMBERS);
 
         CommandHandler commandHandler = new CommandHandler();
         autochannel = new Autochannel();
@@ -43,7 +45,7 @@ public class Discord {
         builder.setStatus(OnlineStatus.ONLINE);
 
         try {
-            manager = builder.build();
+            jda = builder.build();
         } catch (LoginException e) {
             e.printStackTrace();
         }
@@ -61,7 +63,7 @@ public class Discord {
         }).start();
     }
 
-    public ShardManager getManager() {
-        return manager;
+    public JDA getJda() {
+        return jda;
     }
 }

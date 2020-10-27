@@ -18,9 +18,9 @@ public class Autochannel extends ListenerAdapter {
     private final List<VoiceChannel> voiceChannels = new ArrayList<>();
 
     public void onEnable() {
-        List<VoiceChannel> list = Objects.requireNonNull(Objects.requireNonNull(Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).getVoiceChannelById((String) Main.config.get("autochannel"))).getParent()).getVoiceChannels();
+        List<VoiceChannel> list = Objects.requireNonNull(Objects.requireNonNull(Objects.requireNonNull(Discord.INSTANCE.getJda().getGuildById((String) Main.config.get("guild"))).getVoiceChannelById((String) Main.config.get("autochannel"))).getParent()).getVoiceChannels();
         for (VoiceChannel i : list) {
-            if (!Objects.requireNonNull(Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).getVoiceChannelById((String) Main.config.get("autochannel"))).equals(i)) {
+            if (!Objects.requireNonNull(Objects.requireNonNull(Discord.INSTANCE.getJda().getGuildById((String) Main.config.get("guild"))).getVoiceChannelById((String) Main.config.get("autochannel"))).equals(i)) {
                 if (i.getMembers().size() == 0) {
                     i.delete().queue();
                 } else {

@@ -20,7 +20,7 @@ public class DeleteCategory implements ServerCommand {
                 return false;
             }
             try {
-                Category category = Objects.requireNonNull(Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).getCategoryById(args[0]));
+                Category category = Objects.requireNonNull(Objects.requireNonNull(Discord.INSTANCE.getJda().getGuildById((String) Main.config.get("guild"))).getCategoryById(args[0]));
                 String catName = category.getName();
                 for (GuildChannel i : category.getChannels()) {
                     i.delete().complete();

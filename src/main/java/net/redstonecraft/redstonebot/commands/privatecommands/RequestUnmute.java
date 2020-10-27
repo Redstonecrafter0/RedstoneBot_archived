@@ -17,7 +17,7 @@ public class RequestUnmute implements PrivateCommand {
     public boolean onCommand(PrivateChannel channel, User user, Message message, String[] args) {
         EmbedBuilder eb = new EmbedBuilder();
         eb.setTitle(Main.prefix);
-        if (Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).isMember(user)) {
+        if (Objects.requireNonNull(Discord.INSTANCE.getJda().getGuildById((String) Main.config.get("guild"))).isMember(user)) {
             try {
                 ResultSet rs = Main.sql.query("SELECT * FROM muted WHERE dcId = '" + user.getId() + "'");
                 if (rs.isClosed()) {
@@ -26,9 +26,9 @@ public class RequestUnmute implements PrivateCommand {
                 } else {
                     if (rs.getString("dcId").equals(user.getId())) {
                         if (rs.getLong("until") < (System.currentTimeMillis() / 1000)) {
-                            Member member = Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).getMember(user);
-                            Role role = Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).getRoleById((String) Main.config.get("mutedRole"));
-                            Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).removeRoleFromMember(Objects.requireNonNull(member), Objects.requireNonNull(role)).queue();
+                            Member member = Objects.requireNonNull(Discord.INSTANCE.getJda().getGuildById((String) Main.config.get("guild"))).getMember(user);
+                            Role role = Objects.requireNonNull(Discord.INSTANCE.getJda().getGuildById((String) Main.config.get("guild"))).getRoleById((String) Main.config.get("mutedRole"));
+                            Objects.requireNonNull(Discord.INSTANCE.getJda().getGuildById((String) Main.config.get("guild"))).removeRoleFromMember(Objects.requireNonNull(member), Objects.requireNonNull(role)).queue();
                             Main.sql.update("DELETE FROM muted WHERE dcId = '" + user.getId() + "'");
                             eb.setColor(Color.decode("#00FF00"));
                             eb.setDescription("Du wurdest entmuted.");

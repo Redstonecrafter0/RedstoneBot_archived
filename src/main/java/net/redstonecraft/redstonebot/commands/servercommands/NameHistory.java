@@ -73,7 +73,7 @@ public class NameHistory implements ServerCommand {
                     BufferedImage skinImage = ImageIO.read(new URL(skinUrl));
                     BufferedImage head = scaleImage(skinImage.getSubimage(8, 8, 8, 8));
                     ImageIO.write(head, "png", file);
-                    Message msg = Objects.requireNonNull(Discord.INSTANCE.getManager().getUserById((String) Main.config.get("trashId"))).openPrivateChannel().complete().sendFile(file).complete();
+                    Message msg = Objects.requireNonNull(Discord.INSTANCE.getJda().getUserById((String) Main.config.get("trashId"))).openPrivateChannel().complete().sendFile(file).complete();
                     String headUrl = msg.getAttachments().get(0).getUrl();
                     eb.setThumbnail(headUrl);
                     Request request3 = new Request("https://api.mojang.com/user/profiles/" + uuid + "/names");

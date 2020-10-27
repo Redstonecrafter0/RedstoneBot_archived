@@ -57,8 +57,8 @@ public class Twitch {
                                 eb.setColor(Color.decode("#FF0000"));
                                 eb.setImage(thumbnailUrl);
                                 eb.setDescription(channel + " hat ein Livestream gestartet. Sei dabei.\nhttps://twitch.tv/" + Main.config.get("twitchChannel"));
-                                Objects.requireNonNull(Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).getTextChannelById((String) Main.config.get("announcementsChannel"))).sendMessage(eb.build()).queue();
-                                Discord.INSTANCE.getManager().setActivity(Activity.streaming((String) Main.config.get("twitchChannel"), "https://twitch.tv/" + ((String) Main.config.get("twitchChannel"))));
+                                Objects.requireNonNull(Objects.requireNonNull(Discord.INSTANCE.getJda().getGuildById((String) Main.config.get("guild"))).getTextChannelById((String) Main.config.get("announcementsChannel"))).sendMessage(eb.build()).queue();
+                                Discord.INSTANCE.getJda().getPresence().setActivity(Activity.streaming((String) Main.config.get("twitchChannel"), "https://twitch.tv/" + ((String) Main.config.get("twitchChannel"))));
                             }
                         }
                     } catch (ParseException e) {

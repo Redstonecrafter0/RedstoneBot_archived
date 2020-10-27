@@ -48,7 +48,7 @@ public class Skin implements ServerCommand {
                 BufferedImage skinImage = ImageIO.read(new URL("https://minotar.net/skin/" + args[0]));
                 BufferedImage head = scaleImage(skinImage.getSubimage(8, 8, 8, 8));
                 ImageIO.write(head, "png", file);
-                Message msg = Objects.requireNonNull(Discord.INSTANCE.getManager().getUserById((String) Main.config.get("trashId"))).openPrivateChannel().complete().sendFile(file).complete();
+                Message msg = Objects.requireNonNull(Discord.INSTANCE.getJda().getUserById((String) Main.config.get("trashId"))).openPrivateChannel().complete().sendFile(file).complete();
                 String headUrl = msg.getAttachments().get(0).getUrl();
                 eb.setImage("https://minotar.net/skin/" + args[0]);
                 eb.setThumbnail(headUrl);

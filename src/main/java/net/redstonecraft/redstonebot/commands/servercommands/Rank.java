@@ -26,7 +26,7 @@ public class Rank implements ServerCommand {
         ResultSet rs = Main.sql.query("SELECT * FROM leveling WHERE dcId = '" + selMember.getId() + "'");
         long xp;
         EmbedBuilder eb = new EmbedBuilder();
-        if (!selMember.getRoles().contains(Discord.INSTANCE.getManager().getRoleById((String) Main.config.get("verifiedRole")))) {
+        if (!selMember.getRoles().contains(Discord.INSTANCE.getJda().getRoleById((String) Main.config.get("verifiedRole")))) {
             eb.setTitle(Main.prefix);
             eb.setColor(Color.decode("#FF0000"));
             eb.setDescription("Dieser Nutzer ist noch nicht registriert.");

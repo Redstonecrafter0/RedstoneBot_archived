@@ -78,7 +78,7 @@ public class Youtube {
                                 Main.config.put("ytLastVidId", videoId);
                                 Main.saveConfig();
                             }
-                            Objects.requireNonNull(Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).getTextChannelById((String) Main.config.get("announcementsChannel"))).sendMessage(eb.build()).queue();
+                            Objects.requireNonNull(Objects.requireNonNull(Discord.INSTANCE.getJda().getGuildById((String) Main.config.get("guild"))).getTextChannelById((String) Main.config.get("announcementsChannel"))).sendMessage(eb.build()).queue();
                         }
                     }
                 } catch (Exception e) {

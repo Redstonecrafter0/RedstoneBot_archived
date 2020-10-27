@@ -25,7 +25,7 @@ public class ReactionRoles implements ServerCommand {
                         case "list":
                             ResultSet rs = Main.sql.query("SELECT * FROM reactionroles");
                             int c = 0;
-                            Guild guild = Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild")));
+                            Guild guild = Objects.requireNonNull(Discord.INSTANCE.getJda().getGuildById((String) Main.config.get("guild")));
                             while (rs.next()) {
                                 c++;
                                 eb.addField(Objects.requireNonNull(Objects.requireNonNull(guild).getRoleById(rs.getString("roleId"))).getName(), Objects.requireNonNull(guild.getTextChannelById(rs.getString("channelId"))).getAsMention() + " " + Objects.requireNonNull(guild.getEmoteById(rs.getString("emoteId"))).getAsMention(), false);
@@ -46,7 +46,7 @@ public class ReactionRoles implements ServerCommand {
                                 ResultSet r = Main.sql.query("SELECT * FROM reactionroles WHERE channelId = '" + args[1] + "' AND messageId = '" + args[2] + "' AND emoteID = '" + message.getEmotes().get(0).getId() + "'");
                                 try {
                                     if (r.isClosed()) {
-                                        TextChannel tmpChannel = Objects.requireNonNull(Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).getTextChannelById(args[1]));
+                                        TextChannel tmpChannel = Objects.requireNonNull(Objects.requireNonNull(Discord.INSTANCE.getJda().getGuildById((String) Main.config.get("guild"))).getTextChannelById(args[1]));
                                         eb.setColor(Color.decode("#ff0000"));
                                         eb.setDescription("Die Nachricht wurde nicht gefunden.");
                                         Message msg = tmpChannel.retrieveMessageById(args[2]).complete();
@@ -75,7 +75,7 @@ public class ReactionRoles implements ServerCommand {
                                 eb.setDescription("```diff\n- " + Main.commandPrefix + " rr remove [channelid] [messageid] [emote]```");
                             } else {
                                 try {
-                                    TextChannel tmpChannel = Objects.requireNonNull(Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).getTextChannelById(args[1]));
+                                    TextChannel tmpChannel = Objects.requireNonNull(Objects.requireNonNull(Discord.INSTANCE.getJda().getGuildById((String) Main.config.get("guild"))).getTextChannelById(args[1]));
                                     eb.setColor(Color.decode("#ff0000"));
                                     eb.setDescription("Die Nachricht wurde nicht gefunden.");
                                     Message msg = tmpChannel.retrieveMessageById(args[2]).complete();

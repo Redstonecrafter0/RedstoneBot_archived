@@ -27,7 +27,7 @@ public class AutoRole implements ServerCommand {
                             eb.setDescription("Die AutoRoles sind:");
                             for (Object o : (JSONArray) Main.config.get("autoRoles")) {
                                 String i = (String) o;
-                                eb.addField("AutoRole", Objects.requireNonNull(Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).getRoleById(i)).getAsMention(), false);
+                                eb.addField("AutoRole", Objects.requireNonNull(Objects.requireNonNull(Discord.INSTANCE.getJda().getGuildById((String) Main.config.get("guild"))).getRoleById(i)).getAsMention(), false);
                             }
                         }
                         break;
@@ -37,11 +37,11 @@ public class AutoRole implements ServerCommand {
                             JSONArray autoRoles = (JSONArray) Main.config.get("autoRoles");
                             autoRoles.add(message.getMentionedRoles().get(0).getId());
                             Main.saveConfig();
-                            Role role = Objects.requireNonNull(Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).getRoleById((String) Main.config.get("verifiedRole")));
-                            for (Member m : Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).getMembers()) {
+                            Role role = Objects.requireNonNull(Objects.requireNonNull(Discord.INSTANCE.getJda().getGuildById((String) Main.config.get("guild"))).getRoleById((String) Main.config.get("verifiedRole")));
+                            for (Member m : Objects.requireNonNull(Discord.INSTANCE.getJda().getGuildById((String) Main.config.get("guild"))).getMembers()) {
                                 if (m.getRoles().contains(role)) {
                                     for (Object i : autoRoles) {
-                                        Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).addRoleToMember(m, Objects.requireNonNull(Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).getRoleById((String) i))).complete();
+                                        Objects.requireNonNull(Discord.INSTANCE.getJda().getGuildById((String) Main.config.get("guild"))).addRoleToMember(m, Objects.requireNonNull(Objects.requireNonNull(Discord.INSTANCE.getJda().getGuildById((String) Main.config.get("guild"))).getRoleById((String) i))).complete();
                                     }
                                 }
                             }
@@ -52,7 +52,7 @@ public class AutoRole implements ServerCommand {
                     case "remove":
                         JSONArray autoRoles = (JSONArray) Main.config.get("autoRoles");
                         for (Object i : autoRoles) {
-                            if (Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).getRoleById((String) i) == null) {
+                            if (Objects.requireNonNull(Discord.INSTANCE.getJda().getGuildById((String) Main.config.get("guild"))).getRoleById((String) i) == null) {
                                 autoRoles.remove((String) i);
                             }
                         }

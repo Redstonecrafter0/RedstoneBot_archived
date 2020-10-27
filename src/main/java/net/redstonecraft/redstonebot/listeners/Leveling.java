@@ -27,8 +27,8 @@ public class Leveling extends ListenerAdapter {
             } catch (InterruptedException ignored) {
             }
             inChannel = new ArrayList<>();
-            for (VoiceChannel i : Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).getVoiceChannels()) {
-                if (!i.equals(Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).getAfkChannel())) {
+            for (VoiceChannel i : Objects.requireNonNull(Discord.INSTANCE.getJda().getGuildById((String) Main.config.get("guild"))).getVoiceChannels()) {
+                if (!i.equals(Objects.requireNonNull(Discord.INSTANCE.getJda().getGuildById((String) Main.config.get("guild"))).getAfkChannel())) {
                     for (Member m : i.getMembers()) {
                         if (!m.getUser().isBot()) {
                             inChannel.add(m);
@@ -46,7 +46,7 @@ public class Leveling extends ListenerAdapter {
                         Thread.sleep(1800);
                         for (Member i : inChannel) {
                             try {
-                                if (Objects.requireNonNull(i).getRoles().contains(Discord.INSTANCE.getManager().getRoleById((String) Main.config.get("verifiedRole")))) {
+                                if (Objects.requireNonNull(i).getRoles().contains(Discord.INSTANCE.getJda().getRoleById((String) Main.config.get("verifiedRole")))) {
                                     if (!Objects.requireNonNull(i.getVoiceState()).isMuted()) {
                                         ResultSet rs = Main.sql.query("SELECT * FROM leveling WHERE dcId = '" + i.getId() + "'");
                                         long x = (long) (1 + (Math.random() * 1));
@@ -78,7 +78,7 @@ public class Leveling extends ListenerAdapter {
         if (event.getMessage().getContentDisplay().startsWith(Main.commandPrefix)) {
             return;
         }
-        if (Objects.requireNonNull(event.getMember()).getRoles().contains(Discord.INSTANCE.getManager().getRoleById((String) Main.config.get("verifiedRole")))) {
+        if (Objects.requireNonNull(event.getMember()).getRoles().contains(Discord.INSTANCE.getJda().getRoleById((String) Main.config.get("verifiedRole")))) {
             ResultSet rs = Main.sql.query("SELECT * FROM leveling WHERE dcId = '" + event.getMember().getId() + "'");
             try {
                 long x = (long) (1 + (Math.random() * 4));
@@ -95,7 +95,7 @@ public class Leveling extends ListenerAdapter {
     @Override
     public void onGuildVoiceJoin(GuildVoiceJoinEvent event) {
         if (!event.getMember().getUser().isBot()) {
-            if (!Objects.equals(Objects.requireNonNull(event.getMember().getVoiceState()).getChannel(), Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).getAfkChannel())) {
+            if (!Objects.equals(Objects.requireNonNull(event.getMember().getVoiceState()).getChannel(), Objects.requireNonNull(Discord.INSTANCE.getJda().getGuildById((String) Main.config.get("guild"))).getAfkChannel())) {
                 inChannel.add(event.getMember());
             }
         }

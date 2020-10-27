@@ -126,7 +126,7 @@ public class YoutubeChat implements ServerCommand {
                             eb.setAuthor(authorName, profileUrl, profileUrl);
                             eb.setDescription(message);
                             eb.setColor(Color.decode("#FF0000"));
-                            Objects.requireNonNull(Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).getTextChannelById((String) Main.config.get("liveChatChannel"))).sendMessage(eb.build()).queue();
+                            Objects.requireNonNull(Objects.requireNonNull(Discord.INSTANCE.getJda().getGuildById((String) Main.config.get("guild"))).getTextChannelById((String) Main.config.get("liveChatChannel"))).sendMessage(eb.build()).queue();
                         } catch (Exception ignored) {
                         }
                     }

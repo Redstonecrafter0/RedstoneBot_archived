@@ -26,7 +26,7 @@ public class ReactionRolesListener extends ListenerAdapter {
             String messageId = event.getMessageId();
             ResultSet rs = Main.sql.query("SELECT * FROM reactionroles WHERE channelId = '" + channel.getId() + "' AND messageId = '" + messageId + "' AND emoteId = '" + emote.getId() + "'");
             if (!rs.isClosed()) {
-                Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).addRoleToMember(member, Objects.requireNonNull(Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).getRoleById(rs.getString("roleId")))).queue();
+                Objects.requireNonNull(Discord.INSTANCE.getJda().getGuildById((String) Main.config.get("guild"))).addRoleToMember(member, Objects.requireNonNull(Objects.requireNonNull(Discord.INSTANCE.getJda().getGuildById((String) Main.config.get("guild"))).getRoleById(rs.getString("roleId")))).queue();
             }
         } catch (Exception ignored) {
         }
@@ -44,7 +44,7 @@ public class ReactionRolesListener extends ListenerAdapter {
             String messageId = event.getMessageId();
             ResultSet rs = Main.sql.query("SELECT * FROM reactionroles WHERE channelId = '" + channel.getId() + "' AND messageId = '" + messageId + "' AND emoteId = '" + emote.getId() + "'");
             if (!rs.isClosed()) {
-                Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).removeRoleFromMember(member, Objects.requireNonNull(Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).getRoleById(rs.getString("roleId")))).queue();
+                Objects.requireNonNull(Discord.INSTANCE.getJda().getGuildById((String) Main.config.get("guild"))).removeRoleFromMember(member, Objects.requireNonNull(Objects.requireNonNull(Discord.INSTANCE.getJda().getGuildById((String) Main.config.get("guild"))).getRoleById(rs.getString("roleId")))).queue();
             }
         } catch (Exception ignored) {
         }

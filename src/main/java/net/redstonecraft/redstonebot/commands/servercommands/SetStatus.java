@@ -24,16 +24,16 @@ public class SetStatus implements ServerCommand {
             }
             switch (args[0]) {
                 case "online":
-                    Discord.INSTANCE.getManager().setStatus(OnlineStatus.ONLINE);
+                    Discord.INSTANCE.getJda().getPresence().setStatus(OnlineStatus.ONLINE);
                     break;
                 case "idle":
-                    Discord.INSTANCE.getManager().setStatus(OnlineStatus.IDLE);
+                    Discord.INSTANCE.getJda().getPresence().setStatus(OnlineStatus.IDLE);
                     break;
                 case "invisible":
-                    Discord.INSTANCE.getManager().setStatus(OnlineStatus.INVISIBLE);
+                    Discord.INSTANCE.getJda().getPresence().setStatus(OnlineStatus.INVISIBLE);
                     break;
                 case "donotdisturb":
-                    Discord.INSTANCE.getManager().setStatus(OnlineStatus.DO_NOT_DISTURB);
+                    Discord.INSTANCE.getJda().getPresence().setStatus(OnlineStatus.DO_NOT_DISTURB);
                     break;
                 default:
                     return false;

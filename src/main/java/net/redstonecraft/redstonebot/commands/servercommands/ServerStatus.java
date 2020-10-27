@@ -98,7 +98,7 @@ public class ServerStatus implements ServerCommand {
             eb.setDescription("**Version: " + versionName + "**\n" + sb.toString());
             eb.addField("Spieler", online + "/" + maxPlayers, false);
             eb.setColor(Color.decode("#00FF00"));
-            eb.setThumbnail(Objects.requireNonNull(Discord.INSTANCE.getManager().getUserById((String) Main.config.get("trashId"))).openPrivateChannel().complete().sendFile(file).complete().getAttachments().get(0).getUrl());
+            eb.setThumbnail(Objects.requireNonNull(Discord.INSTANCE.getJda().getUserById((String) Main.config.get("trashId"))).openPrivateChannel().complete().sendFile(file).complete().getAttachments().get(0).getUrl());
             channel.sendMessage(eb.build()).queue();
         } catch (Exception ignored) {
             EmbedBuilder eb = new EmbedBuilder();

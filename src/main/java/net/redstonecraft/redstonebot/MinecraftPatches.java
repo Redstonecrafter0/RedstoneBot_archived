@@ -36,7 +36,7 @@ public class MinecraftPatches {
                         Main.config.remove("latestMcVersion");
                         Main.config.put("latestMcVersion", id);
                         Main.saveConfig();
-                        Objects.requireNonNull(Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).getTextChannelById((String) Main.config.get("patchchannel"))).sendMessage(eb.build()).queue();
+                        Objects.requireNonNull(Objects.requireNonNull(Discord.INSTANCE.getJda().getGuildById((String) Main.config.get("guild"))).getTextChannelById((String) Main.config.get("patchchannel"))).sendMessage(eb.build()).queue();
                     }
                 } catch (Exception ignored) {
                 }

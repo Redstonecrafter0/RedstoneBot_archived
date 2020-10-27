@@ -38,7 +38,7 @@ public class Xp implements ServerCommand {
             } else {
                 m = message.getMentionedMembers().get(0);
             }
-            if (m.getRoles().contains(Discord.INSTANCE.getManager().getRoleById((String) Main.config.get("verifiedRole")))) {
+            if (m.getRoles().contains(Discord.INSTANCE.getJda().getRoleById((String) Main.config.get("verifiedRole")))) {
                 try {
                     ResultSet rs = Main.sql.query("SELECT * FROM leveling WHERE dcId = '" + m.getId() + "'");
                     if (rs.isClosed()) {

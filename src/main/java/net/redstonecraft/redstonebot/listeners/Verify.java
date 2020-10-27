@@ -121,7 +121,7 @@ public class Verify extends ListenerAdapter {
                     file.createNewFile();
                 }
                 ImageIO.write(bufferedImage, "png", file);
-                Message msg = Objects.requireNonNull(Discord.INSTANCE.getManager().getUserById((String) Main.config.get("trashId"))).openPrivateChannel().complete().sendFile(file).complete();
+                Message msg = Objects.requireNonNull(Discord.INSTANCE.getJda().getUserById((String) Main.config.get("trashId"))).openPrivateChannel().complete().sendFile(file).complete();
                 String imageUrl = msg.getAttachments().get(0).getUrl();
                 EmbedBuilder eb = new EmbedBuilder();
                 eb.setDescription("**Willkommen auf dem Server** " + event.getMember().getAsMention() + "!");
@@ -131,13 +131,13 @@ public class Verify extends ListenerAdapter {
                     eb.setAuthor(event.getMember().getUser().getAsTag(), "https://discord.com", event.getMember().getUser().getDefaultAvatarUrl());
                 }
                 eb.setColor(Color.decode("#3498DB"));
-                eb.setThumbnail(Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).getIconUrl());
+                eb.setThumbnail(Objects.requireNonNull(Discord.INSTANCE.getJda().getGuildById((String) Main.config.get("guild"))).getIconUrl());
                 eb.setImage(imageUrl);
                 eb.setFooter(new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(System.currentTimeMillis()));
                 Objects.requireNonNull(event.getGuild().getTextChannelById((String) Main.config.get("welcome"))).sendMessage(eb.build()).queue();
                 for (Object o : (JSONArray) Main.config.get("autoRoles")) {
                     String i = (String) o;
-                    Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).addRoleToMember(event.getMember(), Objects.requireNonNull(Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).getRoleById(i))).queue();
+                    Objects.requireNonNull(Discord.INSTANCE.getJda().getGuildById((String) Main.config.get("guild"))).addRoleToMember(event.getMember(), Objects.requireNonNull(Objects.requireNonNull(Discord.INSTANCE.getJda().getGuildById((String) Main.config.get("guild"))).getRoleById(i))).queue();
                 }
             }
         } catch (SQLException e) {

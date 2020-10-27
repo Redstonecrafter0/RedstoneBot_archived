@@ -126,7 +126,7 @@ public class TwitchChat implements ServerCommand {
                                     eb.setColor(Color.decode("#6441a5"));
                                     eb.setAuthor(authorName);
                                     eb.setDescription(message);
-                                    Objects.requireNonNull(Objects.requireNonNull(Discord.INSTANCE.getManager().getGuildById((String) Main.config.get("guild"))).getTextChannelById((String) Main.config.get("liveChatChannel"))).sendMessage(eb.build()).queue();
+                                    Objects.requireNonNull(Objects.requireNonNull(Discord.INSTANCE.getJda().getGuildById((String) Main.config.get("guild"))).getTextChannelById((String) Main.config.get("liveChatChannel"))).sendMessage(eb.build()).queue();
                                 }
                             } else if (line.contains("PING")) {
                                 out.print("PONG tmi.twitch.tv\r\n");

@@ -21,17 +21,17 @@ public class SetActivity implements ServerCommand {
             }
             switch (args[0]) {
                 case "playing":
-                    Discord.INSTANCE.getManager().setActivity(Activity.playing(String.join(" ", Arrays.copyOfRange(args, 1, args.length))));
+                    Discord.INSTANCE.getJda().getPresence().setActivity(Activity.playing(String.join(" ", Arrays.copyOfRange(args, 1, args.length))));
                     eb.setDescription("Botaktivität zu Playing " + String.join(" ", Arrays.copyOfRange(args, 1, args.length)) + " gesetzt.");
                     eb.setColor(Color.decode("#00FF00"));
                     break;
                 case "listening":
-                    Discord.INSTANCE.getManager().setActivity(Activity.listening(String.join(" ", Arrays.copyOfRange(args, 1, args.length))));
+                    Discord.INSTANCE.getJda().getPresence().setActivity(Activity.listening(String.join(" ", Arrays.copyOfRange(args, 1, args.length))));
                     eb.setDescription("Botaktivität zu Listening " + String.join(" ", Arrays.copyOfRange(args, 1, args.length)) + " gesetzt.");
                     eb.setColor(Color.decode("#00FF00"));
                     break;
                 case "watching":
-                    Discord.INSTANCE.getManager().setActivity(Activity.watching(String.join(" ", Arrays.copyOfRange(args, 1, args.length))));
+                    Discord.INSTANCE.getJda().getPresence().setActivity(Activity.watching(String.join(" ", Arrays.copyOfRange(args, 1, args.length))));
                     eb.setDescription("Botaktivität zu Watching " + String.join(" ", Arrays.copyOfRange(args, 1, args.length)) + " gesetzt.");
                     eb.setColor(Color.decode("#00FF00"));
                     break;
@@ -40,7 +40,7 @@ public class SetActivity implements ServerCommand {
                         eb.setDescription("r!setactivity streaming [name] [url]");
                         eb.setColor(Color.decode("#FF0000"));
                     } else {
-                        Discord.INSTANCE.getManager().setActivity(Activity.streaming(String.join(" ", Arrays.copyOfRange(args, 1, args.length - 1)), args[2]));
+                        Discord.INSTANCE.getJda().getPresence().setActivity(Activity.streaming(String.join(" ", Arrays.copyOfRange(args, 1, args.length - 1)), args[2]));
                         eb.setDescription("Botaktivität zu Streaming " + String.join(" ", Arrays.copyOfRange(args, 1, args.length - 1)) + " gesetzt.");
                         eb.setColor(Color.decode("#00FF00"));
                     }
